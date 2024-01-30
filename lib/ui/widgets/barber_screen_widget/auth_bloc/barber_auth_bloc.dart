@@ -9,56 +9,56 @@ import 'package:flutter/material.dart';
 import '../../../../colors/Colors.dart';
 
 
-abstract class AuthEvent{}
+abstract class BarberAuthEvent{}
 
-class AuthLoginEvent extends AuthEvent{
+class BarberAuthLoginEvent extends BarberAuthEvent{
   String email;
   String password;
 
-  AuthLoginEvent({
+  BarberAuthLoginEvent({
     required this.email,
     required this.password});
 }
 
-class AuthLogoutEvent extends AuthEvent{}
-class AuthCheckStatusEvent extends AuthEvent{}
-class AuthErrorEvent extends AuthEvent{}
+class BarberAuthLogoutEvent extends BarberAuthEvent{}
+class BarberAuthCheckStatusEvent extends BarberAuthEvent{}
+class BarberAuthErrorEvent extends BarberAuthEvent{}
 
-enum AuthStateStatus{ authorized, notAuthorized, inProgress }
+enum BarberAuthStateStatus{ authorized, notAuthorized, inProgress }
 
-abstract class AuthState{}
+abstract class BarberAuthState{}
 
-class AuthNotAuthorizedState extends AuthState{
+class BarberAuthNotAuthorizedState extends BarberAuthState{
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthNotAuthorizedState && runtimeType == other.runtimeType;
+      other is BarberAuthNotAuthorizedState && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;
 }
 
-class AuthAuthorizedState extends AuthState{
+class BarberAuthAuthorizedState extends BarberAuthState{
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthAuthorizedState && runtimeType == other.runtimeType;
+      other is BarberAuthAuthorizedState && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;
 }
 
-class AuthFailureState extends AuthState{
+class BarberAuthFailureState extends BarberAuthState{
   final Object error;
 
-  AuthFailureState(this.error);
+  BarberAuthFailureState(this.error);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthFailureState &&
+      other is BarberAuthFailureState &&
           runtimeType == other.runtimeType &&
           error == other.error;
 
@@ -66,23 +66,23 @@ class AuthFailureState extends AuthState{
   int get hashCode => error.hashCode;
 }
 
-class AuthInProgressState extends AuthState{
+class BarberAuthInProgressState extends BarberAuthState{
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInProgressState && runtimeType == other.runtimeType;
+      other is BarberAuthInProgressState && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;
 }
 
-class AuthCheckStatusInProgressState extends AuthState{
+class BarberAuthCheckStatusInProgressState extends BarberAuthState{
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthCheckStatusInProgressState &&
+      other is BarberAuthCheckStatusInProgressState &&
           runtimeType == other.runtimeType;
 
   @override
@@ -90,37 +90,37 @@ class AuthCheckStatusInProgressState extends AuthState{
    
 }
 
-class AuthBloc extends Bloc<AuthEvent, AuthState>{
+class BarberAuthBloc extends Bloc<BarberAuthEvent, BarberAuthState>{
   final String mainScreenName;
-  AuthBloc(AuthState initialState, BuildContext context, this.mainScreenName) : super(initialState){
-    on<AuthEvent>((event, emit) async {
-      if(event is AuthCheckStatusEvent){
+  BarberAuthBloc(BarberAuthState initialState, BuildContext context, this.mainScreenName) : super(initialState){
+    on<BarberAuthEvent>((event, emit) async {
+      if(event is BarberAuthCheckStatusEvent){
         await onAuthCheckStatusEvent(event, emit);
-      }else if(event is AuthLoginEvent){
+      }else if(event is BarberAuthLoginEvent){
         await onAuthLoginEvent(context, event, emit);
-      }else if(event is AuthLogoutEvent){
+      }else if(event is BarberAuthLogoutEvent){
         await onAuthLogoutEvent(event, emit);
-      }else if(event is AuthErrorEvent){
+      }else if(event is BarberAuthErrorEvent){
 
       }
 
     }, transformer: sequential());
-    add(AuthCheckStatusEvent());
+    add(BarberAuthCheckStatusEvent());
   }
 
   Future<void> onAuthCheckStatusEvent(
-      AuthCheckStatusEvent event,
-      Emitter<AuthState> emit) async{
+      BarberAuthCheckStatusEvent event,
+      Emitter<BarberAuthState> emit) async{
     final idToken = await FirebaseAuth.instance.currentUser?.getIdToken();
     final newState = idToken != null
-        ? AuthAuthorizedState()
-        : AuthNotAuthorizedState();
+        ? BarberAuthAuthorizedState()
+        : BarberAuthNotAuthorizedState();
     emit(newState);
   }
   Future<void> onAuthLoginEvent(
       BuildContext context,
-      AuthLoginEvent event,
-      Emitter<AuthState> emit) async{
+      BarberAuthLoginEvent event,
+      Emitter<BarberAuthState> emit) async{
     try{
 
       showDialog(
@@ -158,32 +158,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
 
 
 
-      emit(AuthAuthorizedState());
+      emit(BarberAuthAuthorizedState());
       router.pop();
       router.pushReplacementNamed(mainScreenName);
     }catch(e){
-      emit(AuthFailureState(e));
+      emit(BarberAuthFailureState(e));
     }
 
   }
   Future<void> onAuthLogoutEvent(
-      AuthLogoutEvent event,
-      Emitter<AuthState> emit)async {
+      BarberAuthLogoutEvent event,
+      Emitter<BarberAuthState> emit)async {
     try{
       await FirebaseAuth.instance.signOut();
       router.pushReplacementNamed('/');
     }catch(e){
-      emit(AuthFailureState(e));
+      emit(BarberAuthFailureState(e));
     }
   }
 
   Future<void> onAuthErrorEvent(
-      AuthLogoutEvent event,
-      Emitter<AuthState> emit)async {
+      BarberAuthLogoutEvent event,
+      Emitter<BarberAuthState> emit)async {
     try{
       await FirebaseAuth.instance.signOut();
     }catch(e){
-      emit(AuthFailureState(e));
+      emit(BarberAuthFailureState(e));
     }
   }
 }

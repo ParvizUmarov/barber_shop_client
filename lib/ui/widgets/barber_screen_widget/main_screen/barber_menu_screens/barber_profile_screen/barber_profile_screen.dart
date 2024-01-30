@@ -3,11 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-
 import '../../../../../../colors/Colors.dart';
-import '../../../../../../domain/blocs/auth_bloc.dart';
 import '../../../../../../resources/resources.dart';
+import '../../../auth_bloc/barber_auth_bloc.dart';
 import '../../../entity/barber.dart';
 
 class BarberProfileScreen extends StatelessWidget {
@@ -15,75 +13,75 @@ class BarberProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
-          child: ChangeNotifierProvider<Barber>(
-              create: (context) => Barber.instance,
-              child: _BarberProfileWidget()),
-        ));
-    // StreamBuilder(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (context, snapshot) {
-        //     final user = snapshot.data;
-        //     final uid = user?.uid;
-        //     final customers =
-        //     FirebaseFirestore.instance.collection('Barbers');
-        //     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        //         future: customers.doc(uid).get(),
-        //         builder: (context, snapshot) {
-        //           if (snapshot.connectionState == ConnectionState.waiting) {
-        //             return Center(
-        //               child: CircularProgressIndicator(
-        //                 color: AppColors.mainColor,
-        //               ),
-        //             );
-        //           } else if (snapshot.hasError) {
-        //             return Center(child: Text('Упс... Что та пошло не так'));
-        //           } else {
-        //             if (snapshot.hasData) {
-        //               final name = snapshot.data?['name'];
-        //               final email = snapshot.data?['email'];
-        //               final surname = snapshot.data?['surname'];
-        //               final phone = snapshot.data?['phone'];
-        //               double height = MediaQuery.of(context).size.height;
-        //
-        //               return _BarberProfileWidget(
-        //                   height: height,
-        //                   name: name,
-        //                   surname: surname,
-        //                   email: email,
-        //                   phone: phone);
-        //             } else {
-        //               return Center(child: Text('Нет данных'));
-        //             }
-        //           }
-        //         });
-        //   },
-        // ));
+            child: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            final user = snapshot.data;
+            final uid = user?.uid;
+            final customers = FirebaseFirestore.instance.collection('Barbers');
+            return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                future: customers.doc(uid).get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.mainColor,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Упс... Что та пошло не так'));
+                  } else {
+                    if (snapshot.hasData) {
+                      final name = snapshot.data?['name'];
+                      final email = snapshot.data?['email'];
+                      final surname = snapshot.data?['surname'];
+                      final phone = snapshot.data?['phone'];
+                      double height = MediaQuery.of(context).size.height;
+
+                      return _BarberProfileWidget(
+                          name: name,
+                          surname: surname,
+                          email: email,
+                          phone: phone);
+                    } else {
+                      return Center(child: Text('Нет данных'));
+                    }
+                  }
+                });
+          },
+        )));
   }
 }
 
 class _BarberProfileWidget extends StatefulWidget {
-  const _BarberProfileWidget();
+  final String name;
+  final String surname;
+  final String email;
+  final String phone;
 
+  const _BarberProfileWidget(
+      {required this.name,
+      required this.surname,
+      required this.email,
+      required this.phone});
 
   @override
   State<_BarberProfileWidget> createState() => _BarberProfileWidgetState();
 }
 
 class _BarberProfileWidgetState extends State<_BarberProfileWidget> {
-
-
   @override
   Widget build(BuildContext context) {
-    final model = context.read<AuthBloc>();
-    final barber = context.watch<Barber>();
-   setState(() {
-     barber.barberInfo(FirebaseAuth.instance.currentUser!.uid);
-   });
+    final model = context.read<BarberAuthBloc>();
+    //final barber = context.watch<Barber>();
+    // setState(() {
+    //   barber.barberInfo(FirebaseAuth.instance.currentUser!.uid);
+    // });
 
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocBuilder<BarberAuthBloc, BarberAuthState>(
       builder: (context, state) {
         return Center(
           child: Padding(
@@ -92,18 +90,18 @@ class _BarberProfileWidgetState extends State<_BarberProfileWidget> {
               children: [
                 _BarberInfo(
                   height: MediaQuery.of(context).size.height,
-                  name: barber.getName,
-                  surname: barber.getSurname,
+                  name: widget.name,
+                  surname: widget.surname,
                 ),
                 SizedBox(height: 10),
                 _BarberDetailsInfo(
                     title: 'Email',
-                    subtitle: barber.getEmail,
+                    subtitle: widget.email,
                     leading: Icons.email),
                 SizedBox(height: 10),
                 _BarberDetailsInfo(
                     title: 'Phone',
-                    subtitle: barber.getPhone,
+                    subtitle: widget.phone,
                     leading: Icons.phone),
                 SizedBox(height: 10),
                 Container(
@@ -114,7 +112,7 @@ class _BarberProfileWidgetState extends State<_BarberProfileWidget> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: IconButton(
-                    onPressed: () => model.add(AuthLogoutEvent()),
+                    onPressed: () => model.add(BarberAuthLogoutEvent()),
                     icon: Icon(Icons.exit_to_app),
                   ),
                 ),
@@ -138,7 +136,6 @@ class _BarberInfo extends StatelessWidget {
   final double height;
   final String name;
   final String surname;
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +167,6 @@ class _BarberInfo extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w600),
                       ),
-
                     ],
                   ),
                 ),
@@ -201,11 +197,11 @@ class _BarberDetailsInfo extends StatelessWidget {
   final String subtitle;
   final IconData leading;
 
-  const _BarberDetailsInfo({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.leading});
+  const _BarberDetailsInfo(
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      required this.leading});
 
   @override
   Widget build(BuildContext context) {

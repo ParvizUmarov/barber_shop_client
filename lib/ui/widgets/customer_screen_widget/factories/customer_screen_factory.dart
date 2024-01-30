@@ -4,11 +4,11 @@ import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/custom
 import 'package:barber_shop/ui/widgets/loader/loader_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../domain/blocs/auth_bloc.dart';
-import '../../loader/loader_view_model.dart';
+import '../auth_bloc/customer_auth_bloc.dart';
 import '../entry_screen/login_screen/customer_login_widget.dart';
 import '../entry_screen/register_screen/customer_register_widget.dart';
 
+import '../loader/customer_loader_view_model.dart';
 import '../main_screen/customer_main_screens/home_page_widget/home_page_widget.dart';
 import '../main_screen/customer_menu_screens/customer_main_widget/customer_main_screen_widget.dart';
 import '../main_screen/customer_menu_screens/customer_main_widget/hidden_menu_widget.dart';
@@ -19,15 +19,16 @@ import '../main_screen/customer_menu_screens/customer_settings_screen/customer_s
 class CustomerScreenFactory{
   static final instance = CustomerScreenFactory._();
   CustomerScreenFactory._();
-  AuthBloc? _authBloc;
+  CustomerAuthBloc? _customerAuthBloc;
 
   Widget makeLoaderScreen(BuildContext context){
     final authBloc =
-        _authBloc ?? AuthBloc(
-            AuthCheckStatusInProgressState(), context, 'customerMainScreen');
-    _authBloc = authBloc;
+        _customerAuthBloc ?? CustomerAuthBloc(
+            CustomerAuthCheckStatusInProgressState(), context, 'customerMainScreen');
+    _customerAuthBloc = authBloc;
     return BlocProvider(
-        create: (_) => LoaderViewCubit(LoaderViewCubitState.unknown, authBloc),
+        create: (_) => CustomerLoaderViewCubit(
+            CustomerLoaderViewCubitState.unknown, authBloc),
         lazy: false,
         child: LoaderWidget(),
     );
@@ -57,9 +58,9 @@ class CustomerScreenFactory{
   Widget makeCustomerHiddenMenuWidget() => CustomerHiddenMenuWidget();
 
   Widget makeCustomerLoginWidget(){
-    return BlocProvider<AuthBloc>(
+    return BlocProvider<CustomerAuthBloc>(
         create:(context) =>
-            AuthBloc(AuthCheckStatusInProgressState(), context, 'customerMainScreen'),
+            CustomerAuthBloc(CustomerAuthCheckStatusInProgressState(), context, 'customerMainScreen'),
         child: CustomerLoginWidget());
   }
 }

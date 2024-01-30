@@ -1,7 +1,10 @@
 import 'package:barber_shop/ui/widgets/barber_screen_widget/factories/barber_screen_factories.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/factories/customer_screen_factory.dart';
+import 'package:barber_shop/ui/widgets/loader/loader.dart';
 import 'package:barber_shop/ui/widgets/start_screen/start_screen_widget.dart';
 import 'package:go_router/go_router.dart';
+
+import '../widgets/loader/loader_widget.dart';
 
 final _customerScreenFactory = CustomerScreenFactory.instance;
 final _barberScreenFactory = BarberScreenFactory.instance;
@@ -15,8 +18,7 @@ final GoRouter router = GoRouter(routes: [
   GoRoute(
       path: '/',
       name: '/',
-      builder: (context, state) =>
-          _customerScreenFactory.makeLoaderScreen(context),
+      builder: (context, state) => Loader.instance.makeLoaderScreen(context),
       routes: [
         GoRoute(
           path: 'customerLogin',
@@ -36,7 +38,6 @@ final GoRouter router = GoRouter(routes: [
           builder: (context, state) =>
               _customerScreenFactory.makeCustomerHiddenMenuWidget(),
         ),
-
 
         GoRoute(
           path: 'barberLogin',
