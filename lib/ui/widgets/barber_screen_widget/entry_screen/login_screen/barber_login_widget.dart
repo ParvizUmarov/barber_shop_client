@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../colors/Colors.dart';
 import '../../../../navigation/go_router_navigation.dart';
-import '../../auth_bloc/barber_auth_bloc.dart';
+import '../../../auth_bloc/auth_bloc.dart';
 
 class BarberLoginWidget extends StatelessWidget {
   const BarberLoginWidget({super.key});
@@ -10,13 +10,11 @@ class BarberLoginWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        title: Text('Авторизация'),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor
-      ),
-      body: _BarberScreenBody()
-    );
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+            title: Text('Авторизация'),
+            backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
+        body: _BarberScreenBody());
   }
 }
 
@@ -65,7 +63,6 @@ class _BarberScreenBody extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     _RegisterButton()
-
                   ],
                 ),
               ),
@@ -76,7 +73,6 @@ class _BarberScreenBody extends StatelessWidget {
     );
   }
 }
-
 
 class _RegisterButton extends StatelessWidget {
   const _RegisterButton({
@@ -90,12 +86,15 @@ class _RegisterButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Нет аккаунта?  '
-          ),
+          Text('Нет аккаунта?  '),
           GestureDetector(
               onTap: () => router.pushNamed('barberRegister'),
-              child: Text('Регистрация',
-                style: TextStyle(color: Color(-9285227),),))
+              child: Text(
+                'Регистрация',
+                style: TextStyle(
+                  color: Color(-9285227),
+                ),
+              ))
         ],
       ),
     );
@@ -111,36 +110,32 @@ class _LoginButtonWidget extends StatelessWidget {
     required this.passwordController,
     required this.emailController,
   });
+
   @override
   Widget build(BuildContext context) {
-
-    return BlocBuilder<BarberAuthBloc, BarberAuthState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (BuildContext context, state) {
-        final model = context.read<BarberAuthBloc>();
+        final model = context.read<AuthBloc>();
         return GestureDetector(
           onTap: () => model.add(
-            BarberAuthLoginEvent(
-              email: emailController.text,
-              password: passwordController.text
-          ),),
+            AuthLoginEvent(
+                email: emailController.text, password: passwordController.text),
+          ),
           child: Container(
             width: double.infinity,
             height: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                  colors: const <Color>[
-                    Color(-9285227),
-                    Color(-9942382),
-                    Color(-11453304),
-                  ]
-              ),
+              gradient: LinearGradient(colors: const <Color>[
+                Color(-9285227),
+                Color(-9942382),
+                Color(-11453304),
+              ]),
             ),
             child: const Center(
-              child: Text('Войти', style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16
-              ),
+              child: Text(
+                'Войти',
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
           ),
@@ -161,9 +156,13 @@ class _ForgottenTextButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-            onPressed: (){},
-            child: Text('Забыли пароль?',
-              style: TextStyle(color: Color(-9285227),),))
+            onPressed: () {},
+            child: Text(
+              'Забыли пароль?',
+              style: TextStyle(
+                color: Color(-9285227),
+              ),
+            ))
       ],
     );
   }
@@ -186,16 +185,16 @@ class _TittleWidget extends StatelessWidget {
   }
 }
 
-
 class _TextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final bool obscuredText;
-  const _TextFieldWidget({
-    super.key,
-    required this.controller,
-    required this.labelText,
-    required this.obscuredText});
+
+  const _TextFieldWidget(
+      {super.key,
+      required this.controller,
+      required this.labelText,
+      required this.obscuredText});
 
   @override
   Widget build(BuildContext context) {
@@ -206,39 +205,32 @@ class _TextFieldWidget extends StatelessWidget {
       controller: controller,
       obscureText: obscuredText,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-                color: Theme.of(context).brightness == Brightness.light
-                    ? AppColors.mainColor
-                    : Colors.transparent
-            )
-        ),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              width: 2,
-                color: Theme.of(context).brightness == Brightness.light
-                    ? AppColors.mainColor
-                    : Colors.grey
-            )
-        ),
-        suffixIcon: Icon(
-            Icons.email,
-            color: Colors.grey),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
-        border: OutlineInputBorder(
-          gapPadding: 15,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        labelText: labelText,
-        labelStyle: TextStyle(
-          color: Theme.of(context).brightness == Brightness.light
-              ? AppColors.mainColor
-              : Colors.grey,
-        )
-      ),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? AppColors.mainColor
+                      : Colors.transparent)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                  width: 2,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? AppColors.mainColor
+                      : Colors.grey)),
+          suffixIcon: Icon(Icons.email, color: Colors.grey),
+          filled: true,
+          fillColor: Theme.of(context).colorScheme.primary,
+          border: OutlineInputBorder(
+            gapPadding: 15,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          labelText: labelText,
+          labelStyle: TextStyle(
+            color: Theme.of(context).brightness == Brightness.light
+                ? AppColors.mainColor
+                : Colors.grey,
+          )),
     );
   }
 }

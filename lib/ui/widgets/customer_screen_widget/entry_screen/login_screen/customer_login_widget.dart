@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../colors/Colors.dart';
 import '../../../../navigation/go_router_navigation.dart';
-import '../../auth_bloc/customer_auth_bloc.dart';
+import '../../../auth_bloc/auth_bloc.dart';
 
 class CustomerLoginWidget extends StatelessWidget {
   const CustomerLoginWidget({super.key});
@@ -119,13 +119,13 @@ class _LoginButtonWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CustomerAuthBloc, CustomerAuthState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (BuildContext context, state) {
-        final model = context.read<CustomerAuthBloc>();
+        final model = context.read<AuthBloc>();
         return GestureDetector(
           onTap: () =>
               model.add(
-                CustomerAuthLoginEvent(
+                AuthLoginEvent(
                   email: emailController.text,
                   password: passwordController.text
               ),

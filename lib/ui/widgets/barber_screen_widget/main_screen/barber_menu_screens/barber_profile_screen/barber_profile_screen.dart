@@ -1,12 +1,10 @@
-import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_menu_screens/barber_profile_screen/barber_profile_module.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../colors/Colors.dart';
 import '../../../../../../resources/resources.dart';
-import '../../../auth_bloc/barber_auth_bloc.dart';
-import '../../../entity/barber.dart';
+import '../../../../auth_bloc/auth_bloc.dart';
 
 class BarberProfileScreen extends StatelessWidget {
   const BarberProfileScreen({super.key});
@@ -75,13 +73,13 @@ class _BarberProfileWidget extends StatefulWidget {
 class _BarberProfileWidgetState extends State<_BarberProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    final model = context.read<BarberAuthBloc>();
+    final model = context.read<AuthBloc>();
     //final barber = context.watch<Barber>();
     // setState(() {
     //   barber.barberInfo(FirebaseAuth.instance.currentUser!.uid);
     // });
 
-    return BlocBuilder<BarberAuthBloc, BarberAuthState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return Center(
           child: Padding(
@@ -112,7 +110,7 @@ class _BarberProfileWidgetState extends State<_BarberProfileWidget> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: IconButton(
-                    onPressed: () => model.add(BarberAuthLogoutEvent()),
+                    onPressed: () => model.add(AuthLogoutEvent()),
                     icon: Icon(Icons.exit_to_app),
                   ),
                 ),

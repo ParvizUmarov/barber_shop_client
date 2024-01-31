@@ -45,6 +45,8 @@ class Barber extends ChangeNotifier{
 
       DocumentSnapshot documentSnapshot = value;
 
+      value.exists;
+
       _setName = documentSnapshot['name'];
       _setSurname = documentSnapshot['surname'];
       _setPhone = documentSnapshot['phone'];
