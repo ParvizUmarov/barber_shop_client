@@ -46,7 +46,7 @@ class BarberRegisterModel extends ChangeNotifier{
 
     }on FirebaseAuthException catch(e){
       router.pop();
-      displayMessageToUser(e.code, context);
+      displayErrorMessage(e.code, context);
     }
   }
   

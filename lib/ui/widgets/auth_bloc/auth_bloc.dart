@@ -1,3 +1,4 @@
+import 'package:barber_shop/ui/helper/display_message.dart';
 import 'package:barber_shop/ui/navigation/go_router_navigation.dart';
 import 'package:barber_shop/ui/widgets/barber_screen_widget/entity/barber.dart';
 import 'package:bloc/bloc.dart';
@@ -78,7 +79,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
       AuthLoginEvent event,
       Emitter<AuthState> emit) async{
     try{
-
       showDialog(
           context: context,
           builder: (context) {
@@ -94,11 +94,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
           email: event.email ,
           password: event.password
       );
-      emit(BarberAuthAuthorizedState());
+      //emit(BarberAuthAuthorizedState());
       router.pop();
       router.pushReplacementNamed(mainScreenName);
     }catch(e){
-      emit(BarberAuthFailureState(e));
+      //emit(AuthFailureState(e));
+      router.pop();
+      if (!context.mounted) return;
+      snackBarMessage(e.toString(), context);
+    }
     }
 
   }
@@ -110,7 +114,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
       await FirebaseAuth.instance.signOut();
       router.pushReplacementNamed('/');
     }catch(e){
-      emit(BarberAuthFailureState(e));
+      emit(AuthFailureState(e));
     }
   }
 
@@ -118,12 +122,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
       AuthErrorEvent event,
       Emitter<AuthState> emit)async {
     try{
-      await FirebaseAuth.instance.signOut();
+
     }catch(e){
-      emit(BarberAuthFailureState(e));
+      emit(AuthFailureState(e));
     }
   }
-}
+
 
 abstract class AuthState{}
 
@@ -136,6 +140,23 @@ class AuthUnknownState extends AuthState{
 
   @override
   int get hashCode => 0;
+}
+
+class AuthFailureState extends AuthState{
+  final Object error;
+
+  AuthFailureState(this.error);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is AuthFailureState &&
+              runtimeType == other.runtimeType &&
+              error == other.error;
+
+  @override
+  int get hashCode => error.hashCode;
+
 }
 
 //====================================================================
@@ -162,22 +183,6 @@ class BarberAuthAuthorizedState extends AuthState{
 
   @override
   int get hashCode => 0;
-}
-
-class BarberAuthFailureState extends AuthState{
-  final Object error;
-
-  BarberAuthFailureState(this.error);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is BarberAuthFailureState &&
-              runtimeType == other.runtimeType &&
-              error == other.error;
-
-  @override
-  int get hashCode => error.hashCode;
 }
 
 class BarberAuthInProgressState extends AuthState{
@@ -230,21 +235,6 @@ class CustomerAuthAuthorizedState extends AuthState{
   int get hashCode => 0;
 }
 
-class CustomerAuthFailureState extends AuthState{
-  final Object error;
-
-  CustomerAuthFailureState(this.error);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is BarberAuthFailureState &&
-              runtimeType == other.runtimeType &&
-              error == other.error;
-
-  @override
-  int get hashCode => error.hashCode;
-}
 
 class CustomerAuthInProgressState extends AuthState{
 

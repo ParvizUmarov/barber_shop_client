@@ -6,6 +6,7 @@ class Images {
   static const String barber = 'assets/images/barber.png';
   static const String barberShopLogo = 'assets/images/barberShopLogo.jpg';
   static const String barbershopSalon = 'assets/images/barbershop_salon.jpg';
+  static const String errorIcon = 'assets/images/error_icon.png';
   static const String firstStores = 'assets/images/firstStores.jpg';
   static const String hairdresser = 'assets/images/hairdresser.png';
   static const String logo = 'assets/images/logo.png';

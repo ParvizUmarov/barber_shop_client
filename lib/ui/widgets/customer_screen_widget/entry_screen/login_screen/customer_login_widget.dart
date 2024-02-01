@@ -1,3 +1,4 @@
+import 'package:barber_shop/ui/helper/display_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,18 +14,17 @@ class CustomerLoginWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text(
-          'Авторизация',
-        ),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor
-      ),
+          title: Text(
+            'Авторизация',
+          ),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
       body: _CustomerScreenBody(),
     );
   }
 }
 
 class _CustomerScreenBody extends StatelessWidget {
-   _CustomerScreenBody({
+  _CustomerScreenBody({
     super.key,
   });
 
@@ -72,7 +72,6 @@ class _CustomerScreenBody extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     _RegisterButton()
-
                   ],
                 ),
               ),
@@ -96,12 +95,15 @@ class _RegisterButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Нет аккаунта?  '
-          ),
+          Text('Нет аккаунта?  '),
           GestureDetector(
               onTap: () => router.pushNamed('customerRegister'),
-              child: Text('Регистрация',
-              style: TextStyle(color: Color(-9285227),),))
+              child: Text(
+                'Регистрация',
+                style: TextStyle(
+                  color: Color(-9285227),
+                ),
+              ))
         ],
       ),
     );
@@ -117,37 +119,35 @@ class _LoginButtonWidget extends StatelessWidget {
     required this.passwordController,
     required this.emailController,
   });
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (BuildContext context, state) {
         final model = context.read<AuthBloc>();
         return GestureDetector(
-          onTap: () =>
+          onTap: () {
               model.add(
                 AuthLoginEvent(
-                  email: emailController.text,
-                  password: passwordController.text
-              ),
-              ),
+                    email: emailController.text,
+                    password: passwordController.text),
+              );
+          },
           child: Container(
             width: double.infinity,
             height: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                  colors: const <Color>[
-                    Color(-9285227),
-                    Color(-9942382),
-                    Color(-11453304),
-                  ]
-              ),
+              gradient: LinearGradient(colors: const <Color>[
+                Color(-9285227),
+                Color(-9942382),
+                Color(-11453304),
+              ]),
             ),
             child: const Center(
-              child: Text('Войти', style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16
-              ),
+              child: Text(
+                'Войти',
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
           ),
@@ -168,9 +168,13 @@ class _ForgottenTextButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-            onPressed: (){},
-            child: Text('Забыли пароль?',
-            style: TextStyle(color: Color(-9285227),),))
+            onPressed: () {},
+            child: Text(
+              'Забыли пароль?',
+              style: TextStyle(
+                color: Color(-9285227),
+              ),
+            ))
       ],
     );
   }
@@ -193,20 +197,20 @@ class _TittleWidget extends StatelessWidget {
   }
 }
 
-
 class _TextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final IconData suffixIcon;
   final bool obscureText;
   final String labelText;
   final TextInputType textInputType;
-  const _TextFieldWidget({
-    super.key,
-    required this.controller,
-    required this.suffixIcon,
-    required this.obscureText,
-    required this.labelText,
-    required this.textInputType});
+
+  const _TextFieldWidget(
+      {super.key,
+      required this.controller,
+      required this.suffixIcon,
+      required this.obscureText,
+      required this.labelText,
+      required this.textInputType});
 
   @override
   Widget build(BuildContext context) {
@@ -223,21 +227,15 @@ class _TextFieldWidget extends StatelessWidget {
               borderSide: BorderSide(
                   color: Theme.of(context).brightness == Brightness.light
                       ? AppColors.mainColor
-                      : Colors.transparent
-              )
-          ),
+                      : Colors.transparent)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
                   width: 2,
                   color: Theme.of(context).brightness == Brightness.light
                       ? AppColors.mainColor
-                      : Colors.grey
-              )
-          ),
-          suffixIcon: Icon(
-              suffixIcon,
-              color: Colors.grey),
+                      : Colors.grey)),
+          suffixIcon: Icon(suffixIcon, color: Colors.grey),
           filled: true,
           fillColor: Theme.of(context).colorScheme.primary,
           border: OutlineInputBorder(
@@ -248,9 +246,7 @@ class _TextFieldWidget extends StatelessWidget {
           labelStyle: TextStyle(
               color: Theme.of(context).brightness == Brightness.light
                   ? AppColors.mainColor
-                  : Colors.grey
-          )
-      ),
+                  : Colors.grey)),
     );
   }
 }

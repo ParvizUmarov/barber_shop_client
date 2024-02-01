@@ -8,6 +8,7 @@ void main() {
     expect(File(Images.barber).existsSync(), isTrue);
     expect(File(Images.barberShopLogo).existsSync(), isTrue);
     expect(File(Images.barbershopSalon).existsSync(), isTrue);
+    expect(File(Images.errorIcon).existsSync(), isTrue);
     expect(File(Images.firstStores).existsSync(), isTrue);
     expect(File(Images.hairdresser).existsSync(), isTrue);
     expect(File(Images.logo).existsSync(), isTrue);
