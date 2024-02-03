@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 
+import '../../colors/Colors.dart';
 import '../../resources/resources.dart';
+import '../navigation/go_router_navigation.dart';
 
-void displayErrorMessage(String message, BuildContext context) {
+void circularProgressIndicator(BuildContext context){
   showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      title: Text('Ошибка'),
-      content: Text(message.toString()),
-      actionsAlignment: MainAxisAlignment.center,
-      actions: [
-        MaterialButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Повторить еще раз'),
-        ),
-      ],
-    ),
+      context: context,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(
+            color: AppColors.mainColor,
+          ),
+        );
+      }
   );
 }
 
@@ -30,20 +28,16 @@ void displayAlertDialog(String message, BuildContext context) {
             content: Text(message),
             actions: [
               MaterialButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Отмена'),
-              ),
-              MaterialButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Да'),
+                child: Text('Продолжить'),
               )
             ],
           ));
 }
 
-void snackBarMessage(String message, BuildContext context) {
+void errorMessage(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       behavior: SnackBarBehavior.floating,
@@ -65,9 +59,7 @@ void snackBarMessage(String message, BuildContext context) {
                 children: [
                   Text(
                     'Ошибка!',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   Text(
                     message,
@@ -82,5 +74,17 @@ void snackBarMessage(String message, BuildContext context) {
         ),
       ),
     ),
+  );
+}
+
+Future <void> quickAlert(BuildContext context, QuickAlertType typeOfMessage,
+    String title, String text, Color confirmBtnColor) async {
+  await QuickAlert.show(
+      context: context,
+      type: typeOfMessage,
+      title: title,
+      text: text,
+      confirmBtnColor: confirmBtnColor,
+      confirmBtnText: 'Ok',
   );
 }

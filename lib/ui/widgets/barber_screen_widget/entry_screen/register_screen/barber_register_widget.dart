@@ -1,7 +1,6 @@
-import 'package:barber_shop/ui/widgets/barber_screen_widget/entry_screen/register_screen/barber_register_model.dart';
+import 'package:barber_shop/ui/widgets/register_bloc/register_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../colors/Colors.dart';
 
 class BarberRegisterWidget extends StatelessWidget {
@@ -13,28 +12,20 @@ class BarberRegisterWidget extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
           title: Text('Регистрация '),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor
-      ),
-      body: _BarberRegisterBody.create(),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
+      body: _BarberRegisterBody(),
     );
   }
 }
 
 class _BarberRegisterBody extends StatelessWidget {
-   _BarberRegisterBody({super.key});
+  _BarberRegisterBody({super.key});
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  static Widget create() {
-    return ChangeNotifierProvider(
-      create: (_) => BarberRegisterModel(),
-      child:  _BarberRegisterBody(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +52,16 @@ class _BarberRegisterBody extends StatelessWidget {
                       suffixIcon: Icons.person,
                       obscureText: false,
                       labelText: "username",
-                      textInputType: TextInputType.name,),
+                      textInputType: TextInputType.name,
+                    ),
                     SizedBox(height: 10),
                     _TextFieldWidget(
                       controller: _surnameController,
                       suffixIcon: Icons.person,
                       obscureText: false,
                       labelText: "surname",
-                      textInputType: TextInputType.name,),
+                      textInputType: TextInputType.name,
+                    ),
                     SizedBox(height: 10),
                     _TextFieldWidget(
                         controller: _emailController,
@@ -99,7 +92,6 @@ class _BarberRegisterBody extends StatelessWidget {
                       surnameController: _surnameController,
                       phoneController: _numberController,
                     ),
-
                   ],
                 ),
               ),
@@ -117,57 +109,50 @@ class _TextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final String labelText;
   final TextInputType textInputType;
-  const _TextFieldWidget({
-    super.key,
-    required this.controller,
-    required this.suffixIcon,
-    required this.obscureText,
-    required this.labelText,
-    required this.textInputType});
+
+  const _TextFieldWidget(
+      {super.key,
+      required this.controller,
+      required this.suffixIcon,
+      required this.obscureText,
+      required this.labelText,
+      required this.textInputType});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      cursorColor:Theme.of(context).brightness == Brightness.light
+      cursorColor: Theme.of(context).brightness == Brightness.light
           ? Colors.black
           : Colors.grey,
       controller: controller,
       obscureText: obscureText,
       keyboardType: textInputType,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-                color: Theme.of(context).brightness == Brightness.light
-                    ? Colors.grey
-                    : Colors.transparent
-            )
-        ),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-                width: 2,
-                color: Theme.of(context).brightness == Brightness.light
-                    ? AppColors.mainColor
-                    : Colors.grey
-            )
-        ),
-        suffixIcon: Icon(
-            suffixIcon,
-            color: Colors.grey),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
-        border: OutlineInputBorder(
-          gapPadding: 15,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        labelText: labelText,
-        labelStyle: TextStyle(
-          color: Theme.of(context).brightness == Brightness.light
-              ? AppColors.mainColor
-              : Colors.grey
-        )
-      ),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.grey
+                      : Colors.transparent)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                  width: 2,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? AppColors.mainColor
+                      : Colors.grey)),
+          suffixIcon: Icon(suffixIcon, color: Colors.grey),
+          filled: true,
+          fillColor: Theme.of(context).colorScheme.primary,
+          border: OutlineInputBorder(
+            gapPadding: 15,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          labelText: labelText,
+          labelStyle: TextStyle(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? AppColors.mainColor
+                  : Colors.grey)),
     );
   }
 }
@@ -187,40 +172,40 @@ class _RegisterButtonWidget extends StatelessWidget {
     required this.surnameController,
     required this.phoneController,
   });
+
   @override
   Widget build(BuildContext context) {
-    final model = context.read<BarberRegisterModel>();
-    return GestureDetector(
-      onTap: ()=> model.onPressedRegisterButton(
-          context,
-          nameController,
-          emailController,
-          passwordController,
-          surnameController,
-          phoneController
-      ),
-      child: Container(
-        width: double.infinity,
-        height: 55,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          gradient: LinearGradient(
-              colors: const <Color>[
-                Color(-9285227),
-                Color(-9942382),
-                Color(-11453304),
-              ]
+    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      final model = context.read<RegisterBloc>();
+      return GestureDetector(
+        onTap: () => model.add(
+          RegisterProcessEvent(
+              name: nameController.text,
+              surname: surnameController.text,
+              email: emailController.text,
+              phone: phoneController.text,
+              password: passwordController.text),
+        ),
+        child: Container(
+          width: double.infinity,
+          height: 55,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(colors: const <Color>[
+              Color(-9285227),
+              Color(-9942382),
+              Color(-11453304),
+            ]),
+          ),
+          child: const Center(
+            child: Text(
+              'Создать аккаунт',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
           ),
         ),
-        child: const Center(
-          child: Text('Создать аккаунт', style: TextStyle(
-              color: Colors.white,
-              fontSize: 16
-          ),
-          ),
-        ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -238,5 +223,3 @@ class _TittleWidget extends StatelessWidget {
     );
   }
 }
-
-

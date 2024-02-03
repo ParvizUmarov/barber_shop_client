@@ -1,14 +1,11 @@
 
-import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_menu_screens/customer_profile_screen/customer_profile_screen_bloc.dart';
+import 'package:barber_shop/ui/widgets/auth_bloc/auth_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../../colors/Colors.dart';
-import '../../../../../../domain/services/firebase_service/user_state.dart';
 import '../../../../../../resources/resources.dart';
-import 'customer.dart';
 import 'customer_firebase_repository.dart';
 
 class CustomerProfileScreenWidget extends StatefulWidget {
@@ -96,9 +93,9 @@ class _CustomerProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseRepository = CustomerFirebaseRepository();
     double height = MediaQuery.of(context).size.height;
-    return BlocBuilder<CustomerProfileScreenBloc, UserState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        final model = context.read<CustomerProfileScreenBloc>();
+        final model = context.read<AuthBloc>();
         return Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -106,7 +103,7 @@ class _CustomerProfileWidget extends StatelessWidget {
               children: [
                 _CustomerInfo(
                   height: height,
-                  name: firebaseRepository.getName(),
+                  name: name,
                   surname: surname,
                 ),
                 SizedBox(height: 10),
@@ -126,7 +123,7 @@ class _CustomerProfileWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: IconButton(
-                        onPressed: () => model.signOut(),
+                        onPressed: () => model.add(AuthLogoutEvent()),
                         icon: Icon(Icons.exit_to_app),
                       ),
                     ),

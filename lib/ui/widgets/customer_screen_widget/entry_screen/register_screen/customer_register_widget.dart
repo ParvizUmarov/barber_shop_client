@@ -1,7 +1,7 @@
+import 'package:barber_shop/ui/widgets/register_bloc/register_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../colors/Colors.dart';
-import 'customer_register_model.dart';
 
 class CustomerRegisterWidget extends StatelessWidget {
   const CustomerRegisterWidget({super.key});
@@ -14,7 +14,7 @@ class CustomerRegisterWidget extends StatelessWidget {
         title: Text('Регистрация '),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor
       ),
-      body: _CustomerRegisterBody.create(),
+      body: _CustomerRegisterBody(),
     );
   }
 }
@@ -27,13 +27,6 @@ class _CustomerRegisterBody extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  static Widget create() {
-    return ChangeNotifierProvider(
-      create: (_) => CustomerRegisterModel(),
-      child:  _CustomerRegisterBody(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,37 +181,41 @@ class _RegisterButtonWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final model = context.read<CustomerRegisterModel>();
-    return GestureDetector(
-      onTap: ()=> model.registerCustomer(
-          context,
-          nameController,
-          emailController,
-          passwordController,
-          surnameController,
-          phoneNumberController
+    return BlocBuilder<RegisterBloc, RegisterState>(
+      builder: (context, state) {
+        final model = context.read<RegisterBloc>();
+        return GestureDetector(
+          onTap: ()=> model.add(
+            RegisterProcessEvent(
+                name: nameController.text,
+                surname: surnameController.text,
+                email: emailController.text,
+                phone: phoneNumberController.text,
+                password: passwordController.text)
+              ),
+          child: Container(
+            width: double.infinity,
+            height: 55,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                  colors: const <Color>[
+                    Color(-9285227),
+                    Color(-9942382),
+                    Color(-11453304),
+                  ]
+              ),
+            ),
+            child: const Center(
+              child: Text('Создать аккаунт', style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16
+              ),
+              ),
+            ),
           ),
-      child: Container(
-        width: double.infinity,
-        height: 55,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          gradient: LinearGradient(
-              colors: const <Color>[
-                Color(-9285227),
-                Color(-9942382),
-                Color(-11453304),
-              ]
-          ),
-        ),
-        child: const Center(
-          child: Text('Создать аккаунт', style: TextStyle(
-              color: Colors.white,
-              fontSize: 16
-          ),
-          ),
-        ),
-      ),
+        );
+      }
     );
   }
 }

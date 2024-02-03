@@ -3,6 +3,7 @@ import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_m
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../auth_bloc/auth_bloc.dart';
+import '../../register_bloc/register_bloc.dart';
 import '../entry_screen/register_screen/barber_register_widget.dart';
 import '../main_screen/barber_menu_screens/barber_main_screen/hidden_menu_widget.dart';
 
@@ -21,7 +22,11 @@ class BarberScreenFactory {
   }
 
   Widget makeRegisterScreen() {
-    return BarberRegisterWidget();
+    return BlocProvider<RegisterBloc>(
+      create: (context) =>
+          RegisterBloc(RegisterInProgressState(), context, "Barbers", 'barberMainScreen'),
+      child:  BarberRegisterWidget(),
+    );
   }
 
   Widget makeMainScreenWidget() {

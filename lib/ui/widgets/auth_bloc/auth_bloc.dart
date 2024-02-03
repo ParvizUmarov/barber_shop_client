@@ -6,6 +6,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
 import '../../../colors/Colors.dart';
 
 
@@ -79,16 +80,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
       AuthLoginEvent event,
       Emitter<AuthState> emit) async{
     try{
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
-          }
-      );
+
+      circularProgressIndicator(context);
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: event.email ,
@@ -101,7 +94,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
       //emit(AuthFailureState(e));
       router.pop();
       if (!context.mounted) return;
-      snackBarMessage(e.toString(), context);
+      quickAlert(
+          context,
+          QuickAlertType.error,
+          'Ошибка',
+          e.toString(),
+          Colors.red);
     }
     }
 

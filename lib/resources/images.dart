@@ -14,6 +14,7 @@ class Images {
   static const String salon = 'assets/images/salon.jpg';
   static const String secondStores = 'assets/images/secondStores.jpg';
   static const String shop = 'assets/images/shop.png';
+  static const String success = 'assets/images/success.png';
   static const String thirdStores = 'assets/images/thirdStores.jpg';
   static const String userAvatar = 'assets/images/user_avatar.png';
 }

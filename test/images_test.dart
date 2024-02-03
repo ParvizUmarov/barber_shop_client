@@ -16,6 +16,7 @@ void main() {
     expect(File(Images.salon).existsSync(), isTrue);
     expect(File(Images.secondStores).existsSync(), isTrue);
     expect(File(Images.shop).existsSync(), isTrue);
+    expect(File(Images.success).existsSync(), isTrue);
     expect(File(Images.thirdStores).existsSync(), isTrue);
     expect(File(Images.userAvatar).existsSync(), isTrue);
   });
