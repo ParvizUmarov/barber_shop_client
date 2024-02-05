@@ -38,7 +38,7 @@ class BarberScreenFactory {
     return BlocProvider<AuthBloc>(
         create:(context) =>
             AuthBloc(
-                AuthUnknownState(), context, 'customerMainScreen'),
+                AuthUnknownState(), context, 'barberMainScreen'),
         child: ResetPasswordScreen());
 
   }

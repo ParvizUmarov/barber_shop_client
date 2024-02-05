@@ -1,21 +1,39 @@
 import 'package:barber_shop/theme/theme_data.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier{
-  ThemeData _themeData = lightMode;
+  ThemeData? _currentTheme;
 
-  ThemeData get themeData => _themeData;
+  ThemeData? get currentTheme => _currentTheme;
 
-  set themeData(ThemeData themeData){
-    _themeData = themeData;
-    notifyListeners();
+  bool get getThemeMode => _currentTheme == darkMode;
+
+  bool? _isDarkMode;
+  
+  bool? get getTheme => _isDarkMode;
+
+  set isDarkMode(bool value) {
+    _isDarkMode = value;
   }
 
-  void toggleTheme(){
-    if(_themeData == lightMode){
-      themeData = darkMode;
-    }else{
-      themeData = lightMode;
+  ThemeProvider({required bool? isDarkMode}) {
+    _isDarkMode = isDarkMode;
+    isDarkMode == true
+        ? _currentTheme = darkMode
+        : _currentTheme = lightMode;
+  }
+
+  Future<void> toggleTheme(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if(_currentTheme == darkMode){
+      _currentTheme = lightMode;
+      prefs.setBool('isDarkMode', false);
+    }else {
+      _currentTheme = darkMode;
+      prefs.setBool('isDarkMode', true);
     }
+    notifyListeners();
   }
 }

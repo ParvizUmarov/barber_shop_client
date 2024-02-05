@@ -1,18 +1,15 @@
-import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_menu_screens/customer_settings_screen/customer_settings_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../colors/Colors.dart';
-import '../../../../../navigation/go_router_navigation.dart';
+import '../../../../../../theme/theme_provider.dart';
 
 class CustomerSettingsScreenWidget extends StatelessWidget {
   const CustomerSettingsScreenWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final model = CustomerSettingsModel();
-
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
@@ -31,31 +28,26 @@ class CustomerSettingsScreenWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Опции',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16
-                    ),),
+                    Text(
+                      'Опции',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    ),
                   ],
                 ),
                 ListTile(
-                  title: Text('Тема'),
-                  trailing:
-                    Switch(
+                    title: Text('Тема'),
+                    trailing: Switch(
                       activeColor: Colors.white,
                       activeTrackColor: AppColors.mainColor,
                       inactiveTrackColor: Colors.white,
                       inactiveThumbColor: AppColors.mainColor,
-                      value: model.isDarkMode(context),
-                      onChanged: (bool value) {  
-                        model.changeThemeMode(context);
-                      },)
-                  // IconButton(
-                  //   onPressed: ()=> model.changeThemeMode(context),
-                  //   icon: Icon(Icons.shield_moon)),
-
-
-                ),
+                      value: themeProvider.getThemeMode,
+                      onChanged: (bool value) {
+                        themeProvider.toggleTheme(value);
+                      },
+                    )
+                    ),
 
                 // ListTile(
                 //   trailing: IconButton(

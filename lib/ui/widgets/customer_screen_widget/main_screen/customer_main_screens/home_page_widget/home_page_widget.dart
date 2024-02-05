@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
       child: ListView(
         children: [
           SizedBox(height: 10),
@@ -44,7 +44,7 @@ class _RecommendationsWidget extends StatelessWidget {
               color: Theme.of(context).brightness == Brightness.light
                   ? AppColors.mainColor
                   : Colors.white,
-              fontWeight: FontWeight.w600),
+              fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 10),
         _RecommendationContainer(
@@ -255,7 +255,7 @@ class _HairstylePosting extends StatelessWidget {
                 color: Theme.of(context).brightness == Brightness.light
                     ? AppColors.mainColor
                     : Colors.white,
-                fontWeight: FontWeight.w600)),
+                fontWeight: FontWeight.w500)),
         SizedBox(
           height: 10,
         ),

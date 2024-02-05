@@ -50,7 +50,7 @@ class _BarberSettingsWidgetState extends State<BarberSettingsWidget> {
                       inactiveThumbColor: AppColors.mainColor,
                       value: model.isDarkMode(context),
                       onChanged: (bool value) {
-                        model.changeThemeMode(context);
+                        model.changeThemeMode(context, value);
                       },)
                   // IconButton(
                   //   onPressed: ()=> model.changeThemeMode(context),

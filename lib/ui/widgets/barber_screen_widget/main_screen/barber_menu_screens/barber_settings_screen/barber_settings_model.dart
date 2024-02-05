@@ -5,8 +5,8 @@ import '../../../../../../theme/theme_provider.dart';
 
 class BarberSettingsModel extends ChangeNotifier {
 
-  void changeThemeMode(BuildContext context){
-    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+  void changeThemeMode(BuildContext context, bool value){
+    Provider.of<ThemeProvider>(context, listen: false).toggleTheme(value);
 
   }
 
