@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../colors/Colors.dart';
 import '../../../../../../resources/resources.dart';
-import '../../../../auth_bloc/auth_bloc.dart';
+import '../../../../authentication/auth_bloc/auth_bloc.dart';
 
 class BarberProfileScreen extends StatelessWidget {
   const BarberProfileScreen({super.key});

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../colors/Colors.dart';
 import '../../../../navigation/go_router_navigation.dart';
-import '../../../auth_bloc/auth_bloc.dart';
+import '../../../authentication/auth_bloc/auth_bloc.dart';
 
 class CustomerLoginWidget extends StatelessWidget {
   const CustomerLoginWidget({super.key});
@@ -168,7 +168,9 @@ class _ForgottenTextButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              router.pushNamed('customerResetPassword');
+            },
             child: Text(
               'Забыли пароль?',
               style: TextStyle(

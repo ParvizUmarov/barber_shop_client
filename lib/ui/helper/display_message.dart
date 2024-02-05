@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:quickalert/quickalert.dart';
-
 import '../../colors/Colors.dart';
 import '../../resources/resources.dart';
-import '../navigation/go_router_navigation.dart';
 
 void circularProgressIndicator(BuildContext context){
   showDialog(

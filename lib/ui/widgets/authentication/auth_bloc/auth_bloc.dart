@@ -1,13 +1,11 @@
 import 'package:barber_shop/ui/helper/display_message.dart';
 import 'package:barber_shop/ui/navigation/go_router_navigation.dart';
-import 'package:barber_shop/ui/widgets/barber_screen_widget/entity/barber.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/models/quickalert_type.dart';
-import '../../../colors/Colors.dart';
 
 
 abstract class AuthEvent{}
@@ -25,9 +23,11 @@ class AuthLogoutEvent extends AuthEvent{}
 class AuthCheckStatusEvent extends AuthEvent{}
 class CustomerAuthCheckStatusEvent extends AuthEvent{}
 class AuthErrorEvent extends AuthEvent{}
+class AuthResetPasswordEvent extends AuthEvent{
+  String email;
+  AuthResetPasswordEvent(this.email);
+}
 
-
-enum AuthStateStatus{ authorized, notAuthorized, inProgress }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState>{
   final String mainScreenName;
@@ -41,9 +41,40 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
         await onAuthLogoutEvent(event, emit);
       }else if(event is AuthErrorEvent){
         await onAuthErrorEvent(event, emit);
+      }else if(event is AuthResetPasswordEvent){
+        await onAuthResetPasswordEvent(event, emit, context);
       }
     }, transformer: sequential());
     add(AuthCheckStatusEvent());
+  }
+
+
+  Future<void> onAuthResetPasswordEvent(
+      AuthResetPasswordEvent event,
+      Emitter<AuthState> emit,
+      BuildContext context
+      ) async{
+    try{
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: event.email.trim());
+      if(!context.mounted) return;
+      quickAlert(
+          context,
+          QuickAlertType.success,
+          'Готово!',
+          'Код был отправлен на почту ${event.email}',
+          Colors.green);
+
+
+    }catch(e){
+      if(!context.mounted) return;
+      quickAlert(
+          context,
+          QuickAlertType.error,
+          'Ошибка',
+          e.toString(),
+          Colors.red);
+    }
   }
 
   Future<void> onAuthCheckStatusEvent(
@@ -88,6 +119,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
           password: event.password
       );
       //emit(BarberAuthAuthorizedState());
+      if(!context.mounted) return;
+      await quickAlert(
+          context,
+          QuickAlertType.success,
+          'Готово!',
+          'Авторизация прошла успешно',
+          Colors.green);
       router.pop();
       router.pushReplacementNamed(mainScreenName);
     }catch(e){

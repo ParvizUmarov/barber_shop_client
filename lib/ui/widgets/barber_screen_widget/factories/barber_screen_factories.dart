@@ -2,7 +2,8 @@ import 'package:barber_shop/ui/widgets/barber_screen_widget/entry_screen/login_s
 import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_menu_screens/barber_profile_screen/barber_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../auth_bloc/auth_bloc.dart';
+import '../../authentication/auth_bloc/auth_bloc.dart';
+import '../../authentication/auth_reset_password/forgot_password_screen.dart';
 import '../../register_bloc/register_bloc.dart';
 import '../entry_screen/register_screen/barber_register_widget.dart';
 import '../main_screen/barber_menu_screens/barber_main_screen/hidden_menu_widget.dart';
@@ -31,6 +32,15 @@ class BarberScreenFactory {
 
   Widget makeMainScreenWidget() {
     return BarberHiddenMenuWidget();
+  }
+
+  Widget makeForgotPasswordScreen() {
+    return BlocProvider<AuthBloc>(
+        create:(context) =>
+            AuthBloc(
+                AuthUnknownState(), context, 'customerMainScreen'),
+        child: ResetPasswordScreen());
+
   }
 
   Widget makeProfileScreen(){

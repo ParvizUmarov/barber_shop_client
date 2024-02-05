@@ -1,3 +1,4 @@
+import 'package:barber_shop/ui/widgets/authentication/auth_reset_password/forgot_password_screen.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/booking_page_widget/book_page.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/chat_page_widget/chat_page_screen_widget.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/map_page_widget/map_page.dart';
@@ -5,7 +6,7 @@ import 'package:barber_shop/ui/widgets/loader/loader_widget.dart';
 import 'package:barber_shop/ui/widgets/register_bloc/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../auth_bloc/auth_bloc.dart';
+import '../../authentication/auth_bloc/auth_bloc.dart';
 import '../../loader/loader_view_model.dart';
 import '../entry_screen/login_screen/customer_login_widget.dart';
 import '../entry_screen/register_screen/customer_register_widget.dart';
@@ -54,13 +55,21 @@ class CustomerScreenFactory{
 
   Widget makeChatPageScreen() => ChatPageWidgetScreen();
 
+  Widget makeForgotPasswordScreen() {
+    return BlocProvider<AuthBloc>(
+        create:(context) =>
+            AuthBloc(
+                AuthUnknownState(), context, 'customerMainScreen'),
+        child: ResetPasswordScreen());
+
+  }
+
   Widget makeCustomerRegisterScreen(){
     return BlocProvider<RegisterBloc>(
       create: (context) => RegisterBloc
         (RegisterInProgressState(), context, 'Customers', 'customerMainScreen'),
       child:  CustomerRegisterWidget(),
     );
-    return CustomerRegisterWidget();
   }
 
   Widget makeCustomerHiddenMenuWidget() => CustomerHiddenMenuWidget();
@@ -68,7 +77,8 @@ class CustomerScreenFactory{
   Widget makeCustomerLoginWidget(){
     return BlocProvider<AuthBloc>(
         create:(context) =>
-            AuthBloc(CustomerAuthCheckStatusInProgressState(), context, 'customerMainScreen'),
+            AuthBloc(
+                CustomerAuthCheckStatusInProgressState(), context, 'customerMainScreen'),
         child: CustomerLoginWidget());
   }
 }

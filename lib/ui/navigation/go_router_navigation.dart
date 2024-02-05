@@ -3,8 +3,6 @@ import 'package:barber_shop/ui/widgets/customer_screen_widget/factories/customer
 import 'package:barber_shop/ui/widgets/start_screen/start_screen_widget.dart';
 import 'package:go_router/go_router.dart';
 
-import '../widgets/loader/loader_widget.dart';
-
 final _customerScreenFactory = CustomerScreenFactory.instance;
 final _barberScreenFactory = BarberScreenFactory.instance;
 
@@ -32,6 +30,13 @@ final GoRouter router = GoRouter(routes: [
               _customerScreenFactory.makeCustomerRegisterScreen(),
         ),
         GoRoute(
+          path: 'customerLogin/customerResetPassword',
+          name: 'customerResetPassword',
+          builder: (context, state) =>
+              _customerScreenFactory.makeForgotPasswordScreen(),
+        ),
+
+        GoRoute(
           path: "customerMainScreen",
           name: 'customerMainScreen',
           builder: (context, state) =>
@@ -42,6 +47,12 @@ final GoRouter router = GoRouter(routes: [
           path: 'barberLogin',
           name: 'barberLogin',
           builder: (context, state) => _barberScreenFactory.makeLoginScreen(),
+        ),
+        GoRoute(
+          path: 'barberLogin/barberResetPassword',
+          name: 'barberResetPassword',
+          builder: (context, state) =>
+              _barberScreenFactory.makeForgotPasswordScreen(),
         ),
         GoRoute(
           path: 'barberRegister',
