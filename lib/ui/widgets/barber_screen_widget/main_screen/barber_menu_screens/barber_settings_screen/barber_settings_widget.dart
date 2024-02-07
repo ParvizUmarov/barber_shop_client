@@ -1,8 +1,6 @@
 import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_menu_screens/barber_settings_screen/barber_settings_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../../colors/Colors.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class BarberSettingsWidget extends StatefulWidget {
   const BarberSettingsWidget({super.key});

@@ -1,20 +1,18 @@
-
 import 'package:barber_shop/ui/widgets/loader/loader_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../colors/Colors.dart';
 import '../../navigation/go_router_navigation.dart';
+import '../../navigation/route_name.dart';
+import '../../theme/colors/Colors.dart';
 
 class LoaderWidget extends StatefulWidget {
   const LoaderWidget({super.key});
 
   @override
   State<LoaderWidget> createState() => _LoaderWidgetState();
-
 }
 
-class _LoaderWidgetState extends State<LoaderWidget>{
-
+class _LoaderWidgetState extends State<LoaderWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,16 +29,13 @@ class _LoaderWidgetState extends State<LoaderWidget>{
   }
 
   void onLoaderViewCubitStateChange(
-      BuildContext context,
-      LoaderViewCubitState state
-      ) {
-
-    if(state == LoaderViewCubitState.barberAuthorized){
-      router.pushReplacementNamed('barberMainScreen');
-    }else if(state == LoaderViewCubitState.customerAuthorized){
-      router.pushReplacementNamed('customerMainScreen');
-    }else if(state == LoaderViewCubitState.newVisitor){
-      router.pushReplacementNamed('startScreen');
+      BuildContext context, LoaderViewCubitState state) {
+    if (state == LoaderViewCubitState.barberAuthorized) {
+      router.pushReplacementNamed(RouteName.barberMainScreen);
+    } else if (state == LoaderViewCubitState.customerAuthorized) {
+      router.pushReplacementNamed(RouteName.customerMainScreen);
+    } else if (state == LoaderViewCubitState.newVisitor) {
+      router.pushReplacementNamed(RouteName.startScreen);
     }
   }
 }

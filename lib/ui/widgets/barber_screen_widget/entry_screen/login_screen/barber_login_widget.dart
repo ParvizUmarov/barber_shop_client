@@ -1,8 +1,9 @@
+import 'package:barber_shop/ui/navigation/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../colors/Colors.dart';
+import '../../../../../domain/blocs/auth_bloc/auth_bloc.dart';
 import '../../../../navigation/go_router_navigation.dart';
-import '../../../authentication/auth_bloc/auth_bloc.dart';
+import '../../../../theme/colors/Colors.dart';
 
 
 class BarberLoginWidget extends StatelessWidget {
@@ -89,7 +90,7 @@ class _RegisterButton extends StatelessWidget {
         children: [
           Text('Нет аккаунта?  '),
           GestureDetector(
-              onTap: () => router.pushNamed('barberRegister'),
+              onTap: () => router.pushNamed(RouteName.barberRegisterScreen),
               child: Text(
                 'Регистрация',
                 style: TextStyle(
@@ -157,7 +158,7 @@ class _ForgottenTextButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-            onPressed: () => router.pushNamed('barberResetPassword'),
+            onPressed: () => router.pushNamed(RouteName.barberResetPasswordScreen),
             child: Text(
               'Забыли пароль?',
               style: TextStyle(

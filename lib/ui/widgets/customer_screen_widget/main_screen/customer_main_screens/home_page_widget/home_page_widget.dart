@@ -1,9 +1,8 @@
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/home_page_widget/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../../../../../colors/Colors.dart';
 import '../../../../../../resources/resources.dart';
-
+import '../../../../../theme/colors/Colors.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -123,111 +122,113 @@ class _RecommendationContainer extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(15)),
-            child: Column(children: [
-              Stack(
-                children: [
-                  SizedBox(
-                    height: 150,
-                    width: double.infinity,
-                    child: Image.asset(
-                      barberSalonImagePath,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: 10,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: isOpened == true ? Colors.green : Colors.red,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Center(
-                          child: Text(
-                            isOpened == true ? 'Открыто' : 'Закрыто',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
+              children: [
+                Stack(
                   children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            masterName,
-                            style: TextStyle(
-                                fontSize: 19, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            locations,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          RatingBarIndicator(
-                            rating: rating,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            itemCount: 5,
-                            itemSize: 20.0,
-                            direction: Axis.horizontal,
-                          ),
-                        ],
+                    SizedBox(
+                      height: 150,
+                      width: double.infinity,
+                      child: Image.asset(
+                        barberSalonImagePath,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          '$cost c',
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: isOpened == true ? Colors.green : Colors.red,
                         ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(AppColors.mainColor),
-                          ),
-                          onPressed: () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    BookingScreen(
-                                  masterName: masterName,
-                                  locations: locations,
-                                  rating: rating,
-                                  cost: cost,
-                                  isOpened: isOpened,
-                                  imagePath: barberSalonImagePath,
-                                      barberSchedule: barberSchedule,
-                                ),
-                              ),
-                            )
-                          },
-                          //router.pushNamed('bookingScreen')
-                          child: Text(
-                            'Записаться',
-                            style: TextStyle(color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Center(
+                            child: Text(
+                              isOpened == true ? 'Открыто' : 'Закрыто',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ]),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              masterName,
+                              style: TextStyle(
+                                  fontSize: 19, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              locations,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            RatingBarIndicator(
+                              rating: rating,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            '$cost c',
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColors.mainColor),
+                            ),
+                            onPressed: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      BookingScreen(
+                                    masterName: masterName,
+                                    locations: locations,
+                                    rating: rating,
+                                    cost: cost,
+                                    isOpened: isOpened,
+                                    imagePath: barberSalonImagePath,
+                                    barberSchedule: barberSchedule,
+                                  ),
+                                ),
+                              )
+                            },
+                            //router.pushNamed('bookingScreen')
+                            child: Text(
+                              'Записаться',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -385,33 +386,35 @@ class _SearchFieldWidget extends StatelessWidget {
       child: SizedBox(
         child: TextField(
           cursorColor: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
-                      : Colors.white,
+              ? Colors.black
+              : Colors.white,
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10),
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.primary,
-              border: OutlineInputBorder(
+            contentPadding: EdgeInsets.all(10),
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.primary,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? AppColors.mainColor
+                      : Colors.transparent),
+            ),
+            enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-              ),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? AppColors.mainColor
-                          : Colors.transparent)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey
-                          : Colors.transparent)),
-              hintText: 'Найди свой салон',
-              hintStyle: TextStyle(color: Colors.grey),
-              prefixIcon: Icon(
-                Icons.search,
-                color: Colors.grey,
-              )),
+                borderSide: BorderSide(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey
+                        : Colors.transparent)),
+            hintText: 'Найди свой салон',
+            hintStyle: TextStyle(color: Colors.grey),
+            prefixIcon: Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+          ),
         ),
       ),
     );

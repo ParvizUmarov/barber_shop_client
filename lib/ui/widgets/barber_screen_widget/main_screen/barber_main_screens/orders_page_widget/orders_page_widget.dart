@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../colors/Colors.dart';
 import '../../../../../../resources/resources.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class BarberOrdersPage extends StatelessWidget {
 

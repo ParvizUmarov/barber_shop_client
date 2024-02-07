@@ -4,8 +4,7 @@ import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_m
 import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_main_screens/orders_page_widget/orders_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
-import '../../../../../../colors/Colors.dart';
+import '../../../../../theme/colors/Colors.dart';
 import '../../barber_main_screens/reels_page_widget/reels_page_widget.dart';
 
 

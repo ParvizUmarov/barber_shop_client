@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../colors/Colors.dart';
-
 class BookingPage extends StatelessWidget {
   const BookingPage({super.key});
 

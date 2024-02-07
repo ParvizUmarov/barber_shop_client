@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import '../authentication/auth_bloc/auth_bloc.dart';
+import '../../../domain/blocs/auth_bloc/auth_bloc.dart';
 
 enum LoaderViewCubitState {
   unknown,

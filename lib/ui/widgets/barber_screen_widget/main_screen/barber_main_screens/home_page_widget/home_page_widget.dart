@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:intl/intl.dart';
-
-import '../../../../../../colors/Colors.dart';
 import '../../../../../../resources/resources.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class BarberHomePage extends StatelessWidget {
   const BarberHomePage({super.key});

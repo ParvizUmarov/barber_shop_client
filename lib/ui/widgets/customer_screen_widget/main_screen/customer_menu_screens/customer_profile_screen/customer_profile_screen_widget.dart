@@ -1,22 +1,21 @@
-
-import 'package:barber_shop/ui/widgets/authentication/auth_bloc/auth_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../colors/Colors.dart';
+import '../../../../../../domain/blocs/auth_bloc/auth_bloc.dart';
 import '../../../../../../resources/resources.dart';
-import 'customer_firebase_repository.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class CustomerProfileScreenWidget extends StatefulWidget {
   const CustomerProfileScreenWidget({super.key});
 
   @override
-  State<CustomerProfileScreenWidget> createState() => _CustomerProfileScreenWidgetState();
+  State<CustomerProfileScreenWidget> createState() =>
+      _CustomerProfileScreenWidgetState();
 }
 
-class _CustomerProfileScreenWidgetState extends State<CustomerProfileScreenWidget> {
-
+class _CustomerProfileScreenWidgetState
+    extends State<CustomerProfileScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +58,6 @@ class _CustomerProfileScreenWidgetState extends State<CustomerProfileScreenWidge
                       //                           snapshot.data?['phone'],
                       //                           snapshot.data?['uid']
 
-
                       return _CustomerProfileWidget(
                           name: name,
                           surname: surname,
@@ -71,8 +69,7 @@ class _CustomerProfileScreenWidgetState extends State<CustomerProfileScreenWidge
                   }
                 });
           },
-        )
-    );
+        ));
   }
 }
 
@@ -91,7 +88,6 @@ class _CustomerProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseRepository = CustomerFirebaseRepository();
     double height = MediaQuery.of(context).size.height;
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {

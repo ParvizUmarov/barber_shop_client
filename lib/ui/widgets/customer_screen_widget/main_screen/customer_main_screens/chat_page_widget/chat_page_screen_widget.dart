@@ -3,9 +3,8 @@ import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/custom
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
-import '../../../../../../colors/Colors.dart';
 import '../../../../../../resources/resources.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 
 

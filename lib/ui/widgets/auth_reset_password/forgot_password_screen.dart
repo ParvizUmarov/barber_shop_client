@@ -1,9 +1,8 @@
 
-import 'package:barber_shop/ui/widgets/authentication/auth_bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../colors/Colors.dart';
+import '../../../domain/blocs/auth_bloc/auth_bloc.dart';
+import '../../theme/colors/Colors.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});

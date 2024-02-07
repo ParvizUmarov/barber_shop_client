@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
-import '../../colors/Colors.dart';
 import '../../resources/resources.dart';
+import '../theme/colors/Colors.dart';
 
 void circularProgressIndicator(BuildContext context){
   showDialog(

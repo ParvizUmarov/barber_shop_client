@@ -1,7 +1,9 @@
-import 'package:barber_shop/ui/widgets/register_bloc/register_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../colors/Colors.dart';
+
+import '../../../../../domain/blocs/register_bloc/register_bloc.dart';
+import '../../../../theme/colors/Colors.dart';
 
 class BarberRegisterWidget extends StatelessWidget {
   const BarberRegisterWidget({super.key});

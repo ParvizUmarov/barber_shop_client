@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../colors/Colors.dart';
+import '../../../../../../domain/blocs/auth_bloc/auth_bloc.dart';
 import '../../../../../../resources/resources.dart';
-import '../../../../authentication/auth_bloc/auth_bloc.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class BarberProfileScreen extends StatelessWidget {
   const BarberProfileScreen({super.key});

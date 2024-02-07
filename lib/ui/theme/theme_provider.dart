@@ -1,4 +1,5 @@
-import 'package:barber_shop/theme/theme_data.dart';
+
+import 'package:barber_shop/ui/theme/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

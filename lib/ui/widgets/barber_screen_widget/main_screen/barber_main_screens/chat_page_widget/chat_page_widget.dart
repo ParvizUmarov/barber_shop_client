@@ -2,7 +2,7 @@ import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_m
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../colors/Colors.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class BarberChatPage extends StatefulWidget {
   const BarberChatPage({super.key});

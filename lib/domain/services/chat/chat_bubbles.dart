@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../colors/Colors.dart';
-
+import '../../../ui/theme/colors/Colors.dart';
 
 class ChatBubbles extends StatelessWidget {
   final String message;

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../../../colors/Colors.dart';
-import '../../../../../../theme/theme_provider.dart';
+import '../../../../../theme/colors/Colors.dart';
+import '../../../../../theme/theme_provider.dart';
 
 class CustomerSettingsScreenWidget extends StatelessWidget {
   const CustomerSettingsScreenWidget({super.key});

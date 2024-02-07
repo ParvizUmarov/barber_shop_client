@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../../../../../colors/Colors.dart';
 import '../../../../../helper/display_message.dart';
+import '../../../../../theme/colors/Colors.dart';
 
 class BookingScreen extends StatelessWidget {
   final String imagePath;

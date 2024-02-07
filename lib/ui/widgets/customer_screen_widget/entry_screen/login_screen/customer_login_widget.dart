@@ -1,10 +1,10 @@
-import 'package:barber_shop/ui/helper/display_message.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../colors/Colors.dart';
+import '../../../../../domain/blocs/auth_bloc/auth_bloc.dart';
 import '../../../../navigation/go_router_navigation.dart';
-import '../../../authentication/auth_bloc/auth_bloc.dart';
+import '../../../../navigation/route_name.dart';
+import '../../../../theme/colors/Colors.dart';
 
 class CustomerLoginWidget extends StatelessWidget {
   const CustomerLoginWidget({super.key});
@@ -97,7 +97,7 @@ class _RegisterButton extends StatelessWidget {
         children: [
           Text('Нет аккаунта?  '),
           GestureDetector(
-              onTap: () => router.pushNamed('customerRegister'),
+              onTap: () => router.pushNamed(RouteName.customerRegisterScreen),
               child: Text(
                 'Регистрация',
                 style: TextStyle(
@@ -169,7 +169,7 @@ class _ForgottenTextButton extends StatelessWidget {
       children: [
         TextButton(
             onPressed: () {
-              router.pushNamed('customerResetPassword');
+              router.pushNamed(RouteName.customerResetPasswordScreen);
             },
             child: Text(
               'Забыли пароль?',

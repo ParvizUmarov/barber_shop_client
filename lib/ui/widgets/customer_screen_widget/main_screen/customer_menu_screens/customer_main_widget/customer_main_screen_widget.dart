@@ -1,7 +1,8 @@
 import 'package:barber_shop/ui/widgets/customer_screen_widget/factories/customer_screen_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../../../../../../colors/Colors.dart';
+
+import '../../../../../theme/colors/Colors.dart';
 
 
 class CustomerMainScreenWidget extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../colors/Colors.dart';
+import 'colors/Colors.dart';
+
 
 ThemeData lightMode = ThemeData(
     appBarTheme: AppBarTheme(
