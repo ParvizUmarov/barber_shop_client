@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../domain/services/chat/chat_bubbles.dart';
 import '../../../../../../domain/services/chat/chat_service.dart';
@@ -97,6 +98,12 @@ class _ChatPageState extends State<ChatPage> {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
+    String time = DateFormat('hh:mm')
+        .format(
+        DateTime.fromMicrosecondsSinceEpoch(
+            data['timestamp'].microsecondsSinceEpoch
+        ));
+
     return Container(
       alignment: alignment,
       child: Padding(
@@ -110,8 +117,10 @@ class _ChatPageState extends State<ChatPage> {
               ? MainAxisAlignment.end
               : MainAxisAlignment.start,
           children: [
-            Text(data['senderEmail']),
-            ChatBubbles(message: data['message'])
+            ChatBubbles(
+              message: data['message'],
+              alignment: alignment,
+              time: time,)
           ],
         ),
       ),

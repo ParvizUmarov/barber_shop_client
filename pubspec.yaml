@@ -40,6 +40,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   flutter_calendar_week: ^3.0.2
   quickalert: ^1.0.2
+  flutter_chat_ui: ^1.6.12
   
 
 

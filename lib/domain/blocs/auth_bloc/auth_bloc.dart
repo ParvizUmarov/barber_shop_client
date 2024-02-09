@@ -1,3 +1,4 @@
+import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:barber_shop/ui/helper/display_message.dart';
 import 'package:barber_shop/ui/navigation/go_router_navigation.dart';
 import 'package:bloc/bloc.dart';
@@ -77,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final uid = currentUser!.uid;
 
       await FirebaseFirestore.instance
-          .collection('Barbers')
+          .collection(FirebaseCollections.barbers)
           .doc(uid)
           .get()
           .then((value) {
@@ -87,7 +88,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
 
       await FirebaseFirestore.instance
-          .collection('Customers')
+          .collection(FirebaseCollections.customers)
           .doc(uid)
           .get()
           .then((value) {

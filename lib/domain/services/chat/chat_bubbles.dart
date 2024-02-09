@@ -3,23 +3,54 @@ import 'package:flutter/material.dart';
 import '../../../ui/theme/colors/Colors.dart';
 
 class ChatBubbles extends StatelessWidget {
+  final Alignment alignment;
   final String message;
-  const ChatBubbles({super.key, required this.message});
+  final String time;
+  const ChatBubbles({super.key,
+    required this.message,
+    required this.alignment,
+    required this.time});
 
   @override
   Widget build(BuildContext context) {
+    bool isSender = alignment == Alignment.centerRight;
     return Container(
-      padding: const EdgeInsets.all(12),
+      width: 100,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: AppColors.mainColor
+          color: isSender
+              ? AppColors.mainColor
+              : Colors.grey[200]
       ),
-      child: Text(
-        message,
-        style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white
-        ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: isSender
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            children: [
+              Text(
+                message,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: isSender
+                        ? Colors.white
+                        : Colors.black
+                ),
+              ),
+            ],
+          ),
+      Row(
+        mainAxisAlignment: isSender
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        children: [
+          Text(time,
+              style: TextStyle(color: Colors.grey),),
+        ],
+      ),
+        ],
       ),
     );
   }

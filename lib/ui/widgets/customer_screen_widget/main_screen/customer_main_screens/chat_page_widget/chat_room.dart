@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../domain/services/chat/chat_bubbles.dart';
 import '../../../../../../domain/services/chat/chat_service.dart';
 import '../../../../../theme/colors/Colors.dart';
@@ -62,38 +63,59 @@ class _ChatPageState extends State<ChatPage> {
                     );
                   })),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(15)),
+                    child: IconButton(
+                      onPressed: sendMessage,
+                      icon: const Icon(
+                        color: Colors.white,
+                        Icons.add_a_photo,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ),
                 Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      filled: true,
-                        fillColor: Colors.grey[200],
-                        hintText: 'Сообщение',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
+                  child: SizedBox(
+                    height: 55,
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        filled: true,
+                          fillColor: Theme.of(context).colorScheme.primary,
+                          hintText: 'Сообщение',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(
+                                  color: Colors.transparent
+                              )
+                          ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide(
                                 color: Colors.transparent
                             )
                         ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(
-                              color: Colors.transparent
-                          )
                       ),
+                      obscureText: false,
                     ),
-                    obscureText: false,
                   ),
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                      const EdgeInsets.symmetric(horizontal: 5),
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(3),
                     decoration: BoxDecoration(
                         color: AppColors.mainColor,
                         borderRadius: BorderRadius.circular(15)),
@@ -122,7 +144,11 @@ class _ChatPageState extends State<ChatPage> {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    final timestamp = data['timestamp'];
+    String time = DateFormat('hh:mm')
+        .format(
+        DateTime.fromMicrosecondsSinceEpoch(
+            data['timestamp'].microsecondsSinceEpoch
+    ));
 
     return Container(
       alignment: alignment,
@@ -138,12 +164,19 @@ class _ChatPageState extends State<ChatPage> {
                   ? MainAxisAlignment.end
                   : MainAxisAlignment.start,
           children: [
-            Text(data['senderEmail']),
-            ChatBubbles(message: data['message']),
+            ChatBubbles(
+              message: data['message'],
+              alignment: alignment,
+              time: time),
+            // Text(time,
+            //   style: TextStyle(color: Colors.grey),),
             //Text('$timestamp')
           ],
         ),
       ),
     );
+
+
+
   }
 }

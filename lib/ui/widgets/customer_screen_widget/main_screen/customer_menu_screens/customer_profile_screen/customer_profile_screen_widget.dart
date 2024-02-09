@@ -1,3 +1,4 @@
+import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,8 @@ class _CustomerProfileScreenWidgetState
           builder: (context, snapshot) {
             final user = snapshot.data;
             final uid = user?.uid;
-            final customers =
-                FirebaseFirestore.instance.collection('Customers');
+            final customers = FirebaseFirestore.instance
+                .collection(FirebaseCollections.customers);
             return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                 future: customers.doc(uid).get(),
                 builder: (context, snapshot) {

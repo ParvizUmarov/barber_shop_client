@@ -1,3 +1,4 @@
+import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/booking_page_widget/book_page.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/chat_page_widget/chat_page_screen_widget.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/map_page_widget/map_page.dart';
@@ -39,7 +40,7 @@ class CustomerScreenFactory {
   Widget makeProfileScreen() {
     return BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(
-            CustomerAuthAuthorizedState(), context, 'customerMainScreen'),
+            CustomerAuthAuthorizedState(), context, RouteName.customerMainScreen),
         child: CustomerProfileScreenWidget());
   }
 
@@ -65,7 +66,7 @@ class CustomerScreenFactory {
   Widget makeCustomerRegisterScreen() {
     return BlocProvider<RegisterBloc>(
       create: (context) => RegisterBloc(RegisterInProgressState(), context,
-          'Customers',  RouteName.customerMainScreen),
+          FirebaseCollections.customers,  RouteName.customerMainScreen),
       child: CustomerRegisterWidget(),
     );
   }

@@ -36,47 +36,117 @@ class _ChatPageWidgetScreenState extends State<ChatPageWidgetScreen> {
 
             return ListView(
                 children: snapshot.data!.docs
-                    .map<Widget>((doc) => _buildBarberListItem(doc)).toList()
+                    .map<Widget>((doc) => _barberChatPage(doc)).toList()
             );
         }
         );
   }
 
-  Widget _buildBarberListItem(DocumentSnapshot document)  {
+  Widget _barberChatPage(DocumentSnapshot document)  {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Slidable(
-            endActionPane:  ActionPane(
-                motion: const ScrollMotion(),
-                children: [
-                  SlidableAction(
-                    label: 'Delete',
-                    backgroundColor: Colors.red,
-                    icon: Icons.delete,
-                    onPressed: (BuildContext context) {},
-
-                  ),
-                ]),
-            child: ListTile(
-              leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Image.asset(Images.userAvatar)
-              ),
-              title: Text(data['name']+ ' ' + data['surname']),
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChatPage(
-                            receiverUserEmail: data['email'],
-                            receivedUserId: data['uid'])
-                    )
-                );
-              },
-            ),
+          child: Column(
+            children: [
+              _BuildSearchBar(),
+              SizedBox(height: 10),
+              _BarberListTile(data: data, context: context),
+            ],
           ),
         );
   }
 }
+
+class _BarberListTile extends StatelessWidget {
+  const _BarberListTile({
+    super.key,
+    required this.data,
+    required this.context,
+  });
+
+  final Map<String, dynamic> data;
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      endActionPane:  ActionPane(
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              label: 'Delete',
+              backgroundColor: Colors.red,
+              icon: Icons.delete,
+              onPressed: (BuildContext context) {},
+    
+            ),
+          ]),
+      child: ListTile(
+        leading: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Image.asset(Images.userAvatar)
+        ),
+        title: Text(data['name']+ ' ' + data['surname']),
+        onTap: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    receiverUserEmail: data['email'],
+                    receivedUserId: data['uid'],
+    
+                  )
+                      // ChatPage(
+                      // receiverUserEmail: data['email'],
+                      // receivedUserId: data['uid'])
+              )
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _BuildSearchBar extends StatelessWidget {
+  const _BuildSearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var searchTextEditingController = TextEditingController();
+    return Container(
+      margin: const EdgeInsets.all(10),
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          const Icon(
+            Icons.person_search,
+            size: 24,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Expanded(
+            child: TextFormField(
+              textInputAction: TextInputAction.search,
+              controller: searchTextEditingController,
+              onChanged: (value) {},
+              decoration: const InputDecoration.collapsed(
+                hintText: 'Поиск',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
