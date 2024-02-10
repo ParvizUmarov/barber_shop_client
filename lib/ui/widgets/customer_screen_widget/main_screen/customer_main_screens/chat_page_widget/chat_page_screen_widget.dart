@@ -1,12 +1,10 @@
-
-import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/chat_page_widget/chat_room.dart';
+import 'package:barber_shop/firebase/firebase_collections.dart';
+import 'package:barber_shop/ui/widgets/chat_preferences/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../../../../resources/resources.dart';
 import '../../../../../theme/colors/Colors.dart';
-
-
 
 class ChatPageWidgetScreen extends StatefulWidget {
   const ChatPageWidgetScreen({super.key});
@@ -16,17 +14,18 @@ class ChatPageWidgetScreen extends StatefulWidget {
 }
 
 class _ChatPageWidgetScreenState extends State<ChatPageWidgetScreen> {
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Barbers').snapshots(),
-        builder: (context, snapshot){
-          if(snapshot.hasError){
+        stream: FirebaseFirestore.instance
+            .collection(FirebaseCollections.barbers)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
             return Text('Error');
           }
 
-          if(snapshot.connectionState == ConnectionState.waiting){
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
                 color: AppColors.mainColor,
@@ -34,26 +33,25 @@ class _ChatPageWidgetScreenState extends State<ChatPageWidgetScreen> {
             );
           }
 
-            return ListView(
-                children: snapshot.data!.docs
-                    .map<Widget>((doc) => _barberChatPage(doc)).toList()
-            );
-        }
-        );
+          return ListView(
+              children: snapshot.data!.docs
+                  .map<Widget>((doc) => _barberChatPage(doc))
+                  .toList());
+        });
   }
 
-  Widget _barberChatPage(DocumentSnapshot document)  {
-      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              _BuildSearchBar(),
-              SizedBox(height: 10),
-              _BarberListTile(data: data, context: context),
-            ],
-          ),
-        );
+  Widget _barberChatPage(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          _BuildSearchBar(),
+          SizedBox(height: 10),
+          _BarberListTile(data: data, context: context),
+        ],
+      ),
+    );
   }
 }
 
@@ -70,37 +68,31 @@ class _BarberListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      endActionPane:  ActionPane(
-          motion: const ScrollMotion(),
-          children: [
-            SlidableAction(
-              label: 'Delete',
-              backgroundColor: Colors.red,
-              icon: Icons.delete,
-              onPressed: (BuildContext context) {},
-    
-            ),
-          ]),
+      endActionPane: ActionPane(motion: const ScrollMotion(), children: [
+        SlidableAction(
+          label: 'Delete',
+          backgroundColor: Colors.red,
+          icon: Icons.delete,
+          onPressed: (BuildContext context) {},
+        ),
+      ]),
       child: ListTile(
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(30),
-            child: Image.asset(Images.userAvatar)
-        ),
-        title: Text(data['name']+ ' ' + data['surname']),
-        onTap: (){
+            child: Image.asset(Images.userAvatar)),
+        title: Text(data['name'] + ' ' + data['surname']),
+        onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => ChatPage(
-                    receiverUserEmail: data['email'],
-                    receivedUserId: data['uid'],
-    
-                  )
-                      // ChatPage(
-                      // receiverUserEmail: data['email'],
-                      // receivedUserId: data['uid'])
-              )
-          );
+                        receiverUserEmail: data['email'],
+                        receivedUserId: data['uid'],
+                      )
+                  // ChatPage(
+                  // receiverUserEmail: data['email'],
+                  // receivedUserId: data['uid'])
+                  ));
         },
       ),
     );
@@ -148,5 +140,3 @@ class _BuildSearchBar extends StatelessWidget {
     );
   }
 }
-
-

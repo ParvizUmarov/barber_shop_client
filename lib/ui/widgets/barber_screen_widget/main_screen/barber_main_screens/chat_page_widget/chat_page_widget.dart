@@ -1,61 +1,146 @@
+import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_main_screens/chat_page_widget/chat_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../../../../resources/resources.dart';
 import '../../../../../theme/colors/Colors.dart';
 
-class BarberChatPage extends StatefulWidget {
+class BarberChatPage extends StatelessWidget {
   const BarberChatPage({super.key});
 
   @override
-  State<BarberChatPage> createState() => _BarberChatPageState();
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _BuildSearchBar(),
+        SizedBox(height: 10),
+        SizedBox(
+          width: MediaQuery. of(context). size. width,
+            ///Настроить высоту соответвенно с высотой девайса
+            height: 400,
+            child: _BarberChatBody()),
+      ],
+    );
+  }
 }
 
-class _BarberChatPageState extends State<BarberChatPage> {
+class _BarberChatBody extends StatelessWidget {
+  const _BarberChatBody({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return  StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Customers').snapshots(),
-          builder: (context, snapshot){
-            if(snapshot.hasError){
-              return Text('Error');
-            }
-
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.mainColor,
-                ),
-              );
-            }
-
-            return ListView(
-                children: snapshot.data!.docs
-                    .map<Widget>((doc) => _buildBarberListItem(doc)).toList()
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection(FirebaseCollections.customers)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error');
+          }
+    
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColors.mainColor,
+              ),
             );
-
-
-          });
+          }
+    
+          return ListView(
+              children: snapshot.data!.docs
+                  .map<Widget>((doc) => _BarberListTile(document: doc))
+                  .toList());
+        });
   }
+}
 
-  Widget _buildBarberListItem(DocumentSnapshot document)  {
+
+class _BarberListTile extends StatelessWidget {
+  const _BarberListTile({
+    super.key, required this.document,
+  });
+  final DocumentSnapshot document;
+
+  @override
+  Widget build(BuildContext context) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-
-    return ListTile(
-      title: Text(data['email']),
-      onTap: (){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChatPage(
-                    receiverUserEmail: data['email'],
-                    receivedUserId: data['uid'])
-            )
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Slidable(
+        endActionPane: ActionPane(motion: const ScrollMotion(), children: [
+          SlidableAction(
+            label: 'Delete',
+            backgroundColor: Colors.red,
+            icon: Icons.delete,
+            onPressed: (BuildContext context) {},
+          ),
+        ]),
+        child: ListTile(
+          leading: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset(Images.userAvatar)),
+          title: Text(data['name'] + ' ' + data['surname']),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                      receiverUserEmail: data['email'],
+                      receivedUserId: data['uid'],
+                    )
+                  // ChatPage(
+                  // receiverUserEmail: data['email'],
+                  // receivedUserId: data['uid'])
+                ));
+          },
+        ),
+      ),
     );
-
-
   }
+}
 
+class _BuildSearchBar extends StatelessWidget {
+  const _BuildSearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var searchTextEditingController = TextEditingController();
+    return Container(
+      margin: const EdgeInsets.all(10),
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          const Icon(
+            Icons.person_search,
+            size: 24,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Expanded(
+            child: TextFormField(
+              textInputAction: TextInputAction.search,
+              controller: searchTextEditingController,
+              onChanged: (value) {},
+              decoration: const InputDecoration.collapsed(
+                hintText: 'Поиск',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
