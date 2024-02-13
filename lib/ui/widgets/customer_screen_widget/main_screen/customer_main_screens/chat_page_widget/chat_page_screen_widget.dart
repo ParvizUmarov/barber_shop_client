@@ -16,41 +16,52 @@ class ChatPageWidgetScreen extends StatefulWidget {
 class _ChatPageWidgetScreenState extends State<ChatPageWidgetScreen> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection(FirebaseCollections.barbers)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error');
-          }
+    double width = MediaQuery.of(context).size.width;
+    double height = 80;
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
-          }
+    return Column(
+      children: [
+        _BuildSearchBar(),
+        SizedBox(height: 10),
+        StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection(FirebaseCollections.barbers)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error');
+              }
 
-          return ListView(
-              children: snapshot.data!.docs
-                  .map<Widget>((doc) => _barberChatPage(doc))
-                  .toList());
-        });
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.mainColor,
+                  ),
+                );
+              }
+
+              int? userCount = snapshot.data?.size;
+
+              (userCount! > 1) ? height *= userCount : height;
+
+              return SizedBox(
+                width: width,
+                height: height,
+                child: ListView(
+                    children: snapshot.data!.docs
+                        .map<Widget>((doc) => _barberChatPage(doc))
+                        .toList()),
+              );
+            }),
+      ],
+    );
   }
 
   Widget _barberChatPage(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          _BuildSearchBar(),
-          SizedBox(height: 10),
-          _BarberListTile(data: data, context: context),
-        ],
-      ),
+      child: _BarberListTile(data: data, context: context),
     );
   }
 }

@@ -89,6 +89,13 @@ class _MessageArea extends StatelessWidget {
               ),
             );
           }
+
+          if(snapshot.data!.docs.isEmpty){
+            print(snapshot.hasData);
+            return Center(
+              child: Text('Нет сообщение', style: TextStyle(color: Colors.grey),));
+          }
+
           return ListView(
             children: snapshot.data!.docs
                 .map((document) => _BuildMessageItem(document: document))

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:barber_shop/ui/widgets/chat_preferences/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,15 +14,44 @@ class BarberChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = 80;
+
     return Column(
       children: [
         _BuildSearchBar(),
         SizedBox(height: 10),
-        SizedBox(
-          width: MediaQuery. of(context). size. width,
-            ///Настроить высоту соответвенно с высотой девайса
-            height: 400,
-            child: _BarberChatBody()),
+        StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection(FirebaseCollections.customers)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.mainColor,
+                ),
+              );
+            }
+
+            int? userCount = snapshot.data?.size;
+
+            (userCount! > 1) ? height *= userCount : height;
+
+            return SizedBox(
+              width: width,
+              height: height,
+              child: ListView(
+                  children: snapshot.data!.docs
+                      .map<Widget>((doc) => _BarberListTile(document: doc))
+                      .toList()),
+            );
+          },
+        ),
       ],
     );
   }
@@ -41,7 +72,7 @@ class _BarberChatBody extends StatelessWidget {
           if (snapshot.hasError) {
             return Text('Error');
           }
-    
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
@@ -49,7 +80,7 @@ class _BarberChatBody extends StatelessWidget {
               ),
             );
           }
-    
+
           return ListView(
               children: snapshot.data!.docs
                   .map<Widget>((doc) => _BarberListTile(document: doc))
@@ -58,11 +89,12 @@ class _BarberChatBody extends StatelessWidget {
   }
 }
 
-
 class _BarberListTile extends StatelessWidget {
   const _BarberListTile({
-    super.key, required this.document,
+    super.key,
+    required this.document,
   });
+
   final DocumentSnapshot document;
 
   @override
@@ -89,13 +121,13 @@ class _BarberListTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ChatRoom(
-                      receiverUserEmail: data['email'],
-                      receivedUserId: data['uid'],
-                    )
-                  // ChatPage(
-                  // receiverUserEmail: data['email'],
-                  // receivedUserId: data['uid'])
-                ));
+                          receiverUserEmail: data['email'],
+                          receivedUserId: data['uid'],
+                        )
+                    // ChatPage(
+                    // receiverUserEmail: data['email'],
+                    // receivedUserId: data['uid'])
+                    ));
           },
         ),
       ),
