@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:barber_shop/ui/helper/display_message.dart';
 import 'package:barber_shop/ui/navigation/go_router_navigation.dart';
@@ -13,10 +15,15 @@ import '../../../ui/navigation/route_name.dart';
 abstract class AuthEvent {}
 
 class AuthLoginEvent extends AuthEvent {
+  String collectionName;
   String email;
   String password;
 
-  AuthLoginEvent({required this.email, required this.password});
+  AuthLoginEvent({
+    required this.email,
+    required this.password,
+    required this.collectionName,
+  });
 }
 
 class AuthLogoutEvent extends AuthEvent {}
@@ -108,14 +115,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: event.email, password: event.password);
-      //emit(BarberAuthAuthorizedState());
+
+      await FirebaseFirestore.instance
+          .collection(event.collectionName)
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get()
+          .then((value) async {
+        if (!value.exists) {
+          log('User is not in "${event.collectionName}" collection');
+          await FirebaseAuth.instance.signOut();
+          emit(AuthUnknownState());
+          throw FirebaseAuthException(code: 'Неправильный пароль или email');
+        }
+      });
+
       if (!context.mounted) return;
       await quickAlert(context, QuickAlertType.success, 'Готово!',
           'Авторизация прошла успешно', Colors.green);
       router.pop();
       router.pushReplacementNamed(mainScreenName);
+
+      event.collectionName == FirebaseCollections.customers
+          ? emit(CustomerAuthAuthorizedState())
+          : emit(BarberAuthAuthorizedState());
+
     } catch (e) {
-      //emit(AuthFailureState(e));
       router.pop();
       if (!context.mounted) return;
       quickAlert(

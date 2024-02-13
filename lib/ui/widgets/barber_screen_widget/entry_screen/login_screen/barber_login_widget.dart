@@ -1,3 +1,4 @@
+import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:barber_shop/ui/navigation/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,7 +122,9 @@ class _LoginButtonWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => model.add(
             AuthLoginEvent(
-                email: emailController.text, password: passwordController.text),
+                email: emailController.text,
+                password: passwordController.text,
+                collectionName: FirebaseCollections.barbers),
           ),
           child: Container(
             width: double.infinity,

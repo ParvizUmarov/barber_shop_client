@@ -7,20 +7,20 @@ import 'chat_bubbles.dart';
 import '../../../domain/services/chat/chat_service.dart';
 import '../../theme/colors/Colors.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatRoom extends StatefulWidget {
   final String receiverUserEmail;
   final String receivedUserId;
 
-  const ChatPage(
+  const ChatRoom(
       {super.key,
       required this.receiverUserEmail,
       required this.receivedUserId});
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<ChatRoom> createState() => _ChatRoomState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,9 +187,7 @@ class _BuildMessageItem extends StatelessWidget {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    String time = DateFormat('hh:mm').format(
-        DateTime.fromMicrosecondsSinceEpoch(
-            data['timestamp'].microsecondsSinceEpoch));
+    int dateTime = data['timestamp'].microsecondsSinceEpoch;
 
     return Container(
       alignment: alignment,
@@ -205,7 +203,7 @@ class _BuildMessageItem extends StatelessWidget {
               : MainAxisAlignment.start,
           children: [
             ChatBubbles(
-                message: data['message'], alignment: alignment, time: time),
+                message: data['message'], alignment: alignment, dateTime: dateTime),
             // Text(time,
             //   style: TextStyle(color: Colors.grey),),
             //Text('$timestamp')

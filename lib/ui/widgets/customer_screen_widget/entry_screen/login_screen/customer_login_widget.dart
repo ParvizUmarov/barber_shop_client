@@ -1,4 +1,5 @@
 
+import 'package:barber_shop/firebase/firebase_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../domain/blocs/auth_bloc/auth_bloc.dart';
@@ -130,7 +131,8 @@ class _LoginButtonWidget extends StatelessWidget {
               model.add(
                 AuthLoginEvent(
                     email: emailController.text,
-                    password: passwordController.text),
+                    password: passwordController.text,
+                    collectionName: FirebaseCollections.customers),
               );
           },
           child: Container(

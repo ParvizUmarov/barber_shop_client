@@ -1,5 +1,5 @@
 import 'package:barber_shop/firebase/firebase_collections.dart';
-import 'package:barber_shop/ui/widgets/barber_screen_widget/main_screen/barber_main_screens/chat_page_widget/chat_page.dart';
+import 'package:barber_shop/ui/widgets/chat_preferences/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -88,7 +88,7 @@ class _BarberListTile extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ChatPage(
+                    builder: (context) => ChatRoom(
                       receiverUserEmail: data['email'],
                       receivedUserId: data['uid'],
                     )

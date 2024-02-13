@@ -85,7 +85,7 @@ class _BarberListTile extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ChatPage(
+                  builder: (context) => ChatRoom(
                         receiverUserEmail: data['email'],
                         receivedUserId: data['uid'],
                       )
