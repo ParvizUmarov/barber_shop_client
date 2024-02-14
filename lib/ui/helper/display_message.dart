@@ -28,7 +28,13 @@ void displayAlertDialog(String message, BuildContext context) {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Продолжить'),
+                child: Text('Нет'),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Да'),
               )
             ],
           ));

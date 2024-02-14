@@ -45,7 +45,7 @@ class BookingScreen extends StatelessWidget {
           Image.asset(imagePath),
           SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
                 _BarberName(masterName: masterName, isOpened: isOpened),
@@ -124,7 +124,7 @@ class _Services extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Divider(
               color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.grey
+                  ? Colors.grey[350]
                   : Colors.white,
             ),
           ),

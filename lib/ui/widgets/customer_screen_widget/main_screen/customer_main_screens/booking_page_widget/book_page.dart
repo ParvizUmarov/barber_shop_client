@@ -6,7 +6,7 @@ class BookingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Пусто!'),
+      child: Text('Пусто!', style: TextStyle(color: Colors.grey),),
     );
   }
 }
