@@ -6,6 +6,7 @@ import 'package:barber_shop/ui/widgets/loader/loader_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/blocs/auth_bloc/auth_bloc.dart';
+import '../../../../domain/blocs/booking_bloc/booking_bloc.dart';
 import '../../../../domain/blocs/register_bloc/register_bloc.dart';
 import '../../../navigation/route_name.dart';
 import '../../auth_reset_password/forgot_password_screen.dart';
@@ -39,8 +40,8 @@ class CustomerScreenFactory {
 
   Widget makeProfileScreen() {
     return BlocProvider<AuthBloc>(
-        create: (context) => AuthBloc(
-            CustomerAuthAuthorizedState(), context, RouteName.customerMainScreen),
+        create: (context) => AuthBloc(CustomerAuthAuthorizedState(), context,
+            RouteName.customerMainScreen),
         child: CustomerProfileScreenWidget());
   }
 
@@ -52,7 +53,9 @@ class CustomerScreenFactory {
 
   Widget makeMapPageScreen() => CustomerMapPage();
 
-  Widget makeBookingPageScreen() => BookingPage();
+  Widget makeBookingPageScreen() => BlocProvider<BookingBloc>(
+      create: (context) => BookingBloc(BookingInitialState(bookings: [])),
+      child: BookingPage());
 
   Widget makeChatPageScreen() => ChatPageWidgetScreen();
 
@@ -66,7 +69,7 @@ class CustomerScreenFactory {
   Widget makeCustomerRegisterScreen() {
     return BlocProvider<RegisterBloc>(
       create: (context) => RegisterBloc(RegisterInProgressState(), context,
-          FirebaseCollections.customers,  RouteName.customerMainScreen),
+          FirebaseCollections.customers, RouteName.customerMainScreen),
       child: CustomerRegisterWidget(),
     );
   }
@@ -76,7 +79,7 @@ class CustomerScreenFactory {
   Widget makeCustomerLoginWidget() {
     return BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(CustomerAuthCheckStatusInProgressState(),
-            context,  RouteName.customerMainScreen),
+            context, RouteName.customerMainScreen),
         child: CustomerLoginWidget());
   }
 }

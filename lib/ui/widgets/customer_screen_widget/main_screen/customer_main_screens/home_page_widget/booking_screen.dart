@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../../../../../domain/blocs/booking_bloc/booking_bloc.dart';
 import '../../../../../helper/display_message.dart';
 import '../../../../../theme/colors/Colors.dart';
+import 'booking.dart';
 
 class BookingScreen extends StatelessWidget {
   final String imagePath;
-  final String masterName;
+  final String barberName;
   final String locations;
   final double rating;
   final int cost;
@@ -14,7 +17,7 @@ class BookingScreen extends StatelessWidget {
 
   const BookingScreen(
       {super.key,
-      required this.masterName,
+      required this.barberName,
       required this.locations,
       required this.rating,
       required this.cost,
@@ -22,79 +25,121 @@ class BookingScreen extends StatelessWidget {
       required this.imagePath,
       required this.barberSchedule});
 
+  Widget create() {
+    return BlocProvider<BookingBloc>(
+        create: (context) => BookingBloc(BookingInitialState(bookings: [])),
+        child: BookingScreen(
+          barberName: barberName,
+          locations: locations,
+          rating: rating,
+          cost: cost,
+          isOpened: isOpened,
+          barberSchedule: barberSchedule,
+          imagePath: imagePath,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade500,
-                  borderRadius: BorderRadius.circular(18)),
-              child: const BackButton(
-                color: Colors.white,
-              )),
-        ),
-      ),
-      extendBodyBehindAppBar: true,
-      body: Column(
-        children: [
-          Image.asset(imagePath),
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                _BarberName(masterName: masterName, isOpened: isOpened),
-                _BarberRating(rating: rating),
-                SizedBox(height: 20),
-                _BarberScheduleAndLocation(
-                    barberSchedule: barberSchedule, locations: locations),
-                SizedBox(height: 10),
-                _Services(cost: cost),
-                SizedBox(height: 10),
-                _OrderButton(
-                  sumOfOrders: cost,)
-              ],
-            ),
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade500,
+                    borderRadius: BorderRadius.circular(18)),
+                child: const BackButton(
+                  color: Colors.white,
+                )),
           ),
-        ],
-      ),
-    );
+        ),
+        extendBodyBehindAppBar: true,
+        body: Column(
+          children: [
+            Image.asset(imagePath),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  _BarberName(masterName: barberName, isOpened: isOpened),
+                  _BarberRating(rating: rating),
+                  SizedBox(height: 20),
+                  _BarberScheduleAndLocation(
+                      barberSchedule: barberSchedule, locations: locations),
+                  SizedBox(height: 10),
+                  _Services(cost: cost),
+                  SizedBox(height: 10),
+                  _OrderButton(
+                    totalAmount: cost, barberName: barberName,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
   }
 }
 
 class _OrderButton extends StatelessWidget {
-  final int sumOfOrders;
+  final int totalAmount;
+  final String barberName;
+
   const _OrderButton({
     super.key,
-    required this.sumOfOrders,
+    required this.totalAmount, required this.barberName,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-    
-        backgroundColor:
-            MaterialStateProperty.all(AppColors.mainColor),
-        minimumSize:
-            MaterialStateProperty.all(const Size.fromHeight(50)),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15)
-            ))
-      ),
-      onPressed: () =>
-          displayAlertDialog('Общая сумма услуги $sumOfOrders смн.\nЗаписаться к парикмахеру?', context),
-      child: Text(
-        'Записаться',
-        style: TextStyle(color: Colors.white),
-      ),
-    );
+    return BlocBuilder<BookingBloc, BookingState>(builder: (context, state) {
+      final model = context.read<BookingBloc>();
+
+      return ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.mainColor),
+            minimumSize: MaterialStateProperty.all(const Size.fromHeight(50)),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)))),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    content: Text(
+                        'Общая сумма услуги $totalAmount смн.\nЗаписаться к парикмахеру?'),
+                    actions: [
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Нет'),
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          model.add(BookingAddEvent(
+                              booking:  Booking(
+                                  barberName:barberName ,
+                                  services: 'Стрижка',
+                                  totalAmount: totalAmount),));
+                          Navigator.pop(context);
+                        },
+                        child: Text('Да'),
+                      )
+                    ],
+                  ));
+        },
+        child: Text(
+          'Записаться',
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    });
   }
 }
 
@@ -185,6 +230,7 @@ class _BarberServices extends StatefulWidget {
 
 class _BarberServicesState extends State<_BarberServices> {
   bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -203,7 +249,6 @@ class _BarberServicesState extends State<_BarberServices> {
           setState(() {
             isSelected = value;
           });
-
         },
       ),
     );

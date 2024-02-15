@@ -1,5 +1,7 @@
+import 'package:barber_shop/domain/blocs/booking_bloc/booking_bloc.dart';
 import 'package:barber_shop/ui/widgets/customer_screen_widget/main_screen/customer_main_screens/home_page_widget/booking_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../../resources/resources.dart';
 import '../../../../../theme/colors/Colors.dart';
@@ -126,33 +128,9 @@ class _RecommendationContainer extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    SizedBox(
-                      height: 150,
-                      width: double.infinity,
-                      child: Image.asset(
-                        barberSalonImagePath,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      left: 10,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: isOpened == true ? Colors.green : Colors.red,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Center(
-                            child: Text(
-                              isOpened == true ? 'Открыто' : 'Закрыто',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    _BarberSalonImageWidget(
+                        barberSalonImagePath: barberSalonImagePath),
+                    _BarberStatusSalon(isOpened: isOpened),
                   ],
                 ),
                 Padding(
@@ -160,70 +138,18 @@ class _RecommendationContainer extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(
-                              masterName,
-                              style: TextStyle(
-                                  fontSize: 19, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              locations,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            RatingBarIndicator(
-                              rating: rating,
-                              itemBuilder: (context, index) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              itemCount: 5,
-                              itemSize: 20.0,
-                              direction: Axis.horizontal,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            '$cost c',
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  AppColors.mainColor),
-                            ),
-                            onPressed: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      BookingScreen(
-                                    masterName: masterName,
-                                    locations: locations,
-                                    rating: rating,
-                                    cost: cost,
-                                    isOpened: isOpened,
-                                    imagePath: barberSalonImagePath,
-                                    barberSchedule: barberSchedule,
-                                  ),
-                                ),
-                              )
-                            },
-                            //router.pushNamed('bookingScreen')
-                            child: Text(
-                              'Записаться',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      )
+                      _BarberDetailsInfoWIdget(
+                          masterName: masterName,
+                          locations: locations,
+                          rating: rating),
+                      _BarberBookingAndPriceWidget(
+                          cost: cost,
+                          masterName: masterName,
+                          locations: locations,
+                          rating: rating,
+                          isOpened: isOpened,
+                          barberSalonImagePath: barberSalonImagePath,
+                          barberSchedule: barberSchedule)
                     ],
                   ),
                 ),
@@ -231,6 +157,161 @@ class _RecommendationContainer extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BarberBookingAndPriceWidget extends StatelessWidget {
+  const _BarberBookingAndPriceWidget({
+    super.key,
+    required this.cost,
+    required this.masterName,
+    required this.locations,
+    required this.rating,
+    required this.isOpened,
+    required this.barberSalonImagePath,
+    required this.barberSchedule,
+  });
+
+  final int cost;
+  final String masterName;
+  final String locations;
+  final double rating;
+  final bool isOpened;
+  final String barberSalonImagePath;
+  final String barberSchedule;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          '$cost c',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+        ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.mainColor),
+          ),
+          onPressed: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => BookingScreen(
+                  barberName: masterName,
+                  locations: locations,
+                  rating: rating,
+                  cost: cost,
+                  isOpened: isOpened,
+                  imagePath: barberSalonImagePath,
+                  barberSchedule: barberSchedule,
+                ).create(),
+              ),
+            )
+          },
+          //router.pushNamed('bookingScreen')
+          child: Text(
+            'Записаться',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BarberDetailsInfoWIdget extends StatelessWidget {
+  const _BarberDetailsInfoWIdget({
+    super.key,
+    required this.masterName,
+    required this.locations,
+    required this.rating,
+  });
+
+  final String masterName;
+  final String locations;
+  final double rating;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Text(
+            masterName,
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            locations,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.grey),
+          ),
+          RatingBarIndicator(
+            rating: rating,
+            itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BarberStatusSalon extends StatelessWidget {
+  const _BarberStatusSalon({
+    super.key,
+    required this.isOpened,
+  });
+
+  final bool isOpened;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 10,
+      left: 10,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: isOpened == true ? Colors.green : Colors.red,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: Center(
+            child: Text(
+              isOpened == true ? 'Открыто' : 'Закрыто',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BarberSalonImageWidget extends StatelessWidget {
+  const _BarberSalonImageWidget({
+    super.key,
+    required this.barberSalonImagePath,
+  });
+
+  final String barberSalonImagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 150,
+      width: double.infinity,
+      child: Image.asset(
+        barberSalonImagePath,
+        fit: BoxFit.cover,
       ),
     );
   }
