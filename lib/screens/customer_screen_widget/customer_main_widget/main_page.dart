@@ -1,0 +1,1 @@
+export 'view/customer_main_screen_widget.dart';

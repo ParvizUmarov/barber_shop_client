@@ -1,0 +1,1 @@
+export 'view/chat_page_screen_widget.dart';

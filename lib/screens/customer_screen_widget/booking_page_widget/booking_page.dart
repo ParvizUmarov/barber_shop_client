@@ -1,0 +1,1 @@
+export 'view/book_page.dart';

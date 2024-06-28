@@ -13,7 +13,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../shared/resources/resources.dart';
 import '../../../../shared/theme/colors/Colors.dart';
-import '../presentaion/barber_chat_room.dart';
 import '../bloc/chat_bloc/chat_state.dart';
 
 class BarberChatPage extends StatefulWidget {

@@ -1,0 +1,1 @@
+export 'view/barber_settings_widget.dart';

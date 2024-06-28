@@ -1,14 +1,17 @@
+import 'package:barber_shop/screens/barber_screen_widget/auth_screen/auth_screen.dart';
+import 'package:barber_shop/screens/barber_screen_widget/barber_main_screen/barber_main_page.dart';
+import 'package:barber_shop/screens/barber_screen_widget/barber_profile_screen/barber_profile_page.dart';
+import 'package:barber_shop/screens/barber_screen_widget/barber_settings_screen/barber_setting_page.dart';
+import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/widget/chat_page_widget.dart';
+import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/home_page.dart';
+import 'package:barber_shop/screens/barber_screen_widget/orders_page_widget/bloc/barber_orders_bloc/barber_orders_bloc.dart';
+import 'package:barber_shop/screens/barber_screen_widget/orders_page_widget/orders_page.dart';
 import 'package:barber_shop/shared/general_blocs/auth_bloc.dart';
 import 'package:barber_shop/shared/general_blocs/register_bloc.dart';
-import 'package:barber_shop/shared/firebase/firebase_collections.dart';
-import 'package:barber_shop/screens/barber_screen_widget/auth_screen/login_screen/barber_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/navigation/route_name.dart';
-import '../../auth_reset_password/forgot_password_screen.dart';
-import '../auth_screen/register_screen/barber_register_widget.dart';
-import '../barber_main_screen/hidden_menu_widget.dart';
-import '../barber_profile_screen/presentation/barber_profile_screen.dart';
+import '../barber_main_screen/widget/hidden_menu_widget.dart';
 
 class BarberScreenFactory {
   static final instance = BarberScreenFactory._();
@@ -51,4 +54,27 @@ class BarberScreenFactory {
             BarberAuthAuthorizedState(), context, RouteName.barberMainScreen),
         child: BarberProfileScreen());
   }
+
+  Widget makeHomeScreen(){
+    return BarberHomePage();
+  }
+
+  Widget makeChatPage(){
+    return BarberChatPage();
+  }
+
+  Widget makeOrderPage(){
+    return BlocProvider<BarberOrdersBloc>(
+        create: (context) => BarberOrdersBloc(),
+        child: BarberOrdersPage());
+  }
+
+  Widget makeMainScreen(){
+    return BarberMainScreenWidget();
+  }
+
+  Widget makeSettingScreen(){
+    return BarberSettingsWidget();
+  }
+
 }

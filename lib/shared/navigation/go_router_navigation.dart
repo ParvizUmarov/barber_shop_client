@@ -1,8 +1,8 @@
 
-import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/presentaion/barber_chat_room.dart';
+import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/chat_page.dart';
 import 'package:barber_shop/screens/barber_screen_widget/factories/barber_screen_factories.dart';
 import 'package:barber_shop/screens/customer_screen_widget/factories/customer_screen_factory.dart';
-import 'package:barber_shop/screens/start_screen/start_screen_widget.dart';
+import 'package:barber_shop/screens/loader/loader_page.dart';
 import 'package:barber_shop/shared/data/entity/chat.dart';
 import 'package:barber_shop/shared/navigation/route_name.dart';
 import 'package:barber_shop/shared/navigation/route_path.dart';

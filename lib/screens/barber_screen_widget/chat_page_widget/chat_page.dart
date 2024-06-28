@@ -1,0 +1,1 @@
+export 'view/barber_chat_room.dart';
