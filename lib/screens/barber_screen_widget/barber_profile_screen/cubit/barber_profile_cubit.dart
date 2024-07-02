@@ -14,7 +14,7 @@ class BarberProfileCubit extends Cubit<BarberProfileState>{
 
   getBarberData() async {
     var usersInfo = await db_service.getUserInfo();
-    final response = await repository.getBarberInfo(usersInfo!.mail, usersInfo.token);
+    final response = await repository.getBarberProfileInfo(usersInfo!.token);
 
     if(response.errorMessage == null){
       final barber = response.response;

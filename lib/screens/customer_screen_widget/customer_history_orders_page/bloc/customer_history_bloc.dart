@@ -24,7 +24,7 @@ class CustomerHistoryBloc extends Bloc<CustomerHistoryEvent, CustomerHistoryStat
     if(userInfo == null){
       emit(HistoryPageFailure(errorMessage: 'Авторизуйтесь заново'));
     }else{
-      var response = await _orderRepository.getOrderOfCustomer(userInfo.uid, userInfo.token);
+      var response = await _orderRepository.getOrderOfCustomer(userInfo.token);
 
       if(response.errorMessage == null){
         List<OrderInfo> orders = response.response;

@@ -71,6 +71,12 @@ class OrderInfo {
       'serviceName': serviceName,
       'servicePrice': servicePrice
     };
+
+
   }
 
+  @override
+  String toString() {
+    return 'OrderInfo{id: $id, barberId: $barberId, barberName: $barberName, barberPhone: $barberPhone, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, status: $status, time: $time, grade: $grade, serviceId: $serviceId, serviceName: $serviceName, servicePrice: $servicePrice}';
+  }
 }

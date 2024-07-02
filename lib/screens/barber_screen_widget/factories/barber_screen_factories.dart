@@ -3,6 +3,7 @@ import 'package:barber_shop/screens/barber_screen_widget/barber_main_screen/barb
 import 'package:barber_shop/screens/barber_screen_widget/barber_profile_screen/barber_profile_page.dart';
 import 'package:barber_shop/screens/barber_screen_widget/barber_settings_screen/barber_setting_page.dart';
 import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/widget/chat_page_widget.dart';
+import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/bloc/barber_order_bloc/barber_order_bloc.dart';
 import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/home_page.dart';
 import 'package:barber_shop/screens/barber_screen_widget/orders_page_widget/bloc/barber_orders_bloc/barber_orders_bloc.dart';
 import 'package:barber_shop/screens/barber_screen_widget/orders_page_widget/orders_page.dart';
@@ -55,26 +56,27 @@ class BarberScreenFactory {
         child: BarberProfileScreen());
   }
 
-  Widget makeHomeScreen(){
-    return BarberHomePage();
+  Widget makeHomeScreen() {
+    return BlocProvider(
+        create: (context) => BarberReservedOrderBloc(),
+        child: BarberHomePage()
+    );
   }
 
-  Widget makeChatPage(){
+  Widget makeChatPage() {
     return BarberChatPage();
   }
 
-  Widget makeOrderPage(){
-    return BlocProvider<BarberOrdersBloc>(
-        create: (context) => BarberOrdersBloc(),
-        child: BarberOrdersPage());
+  Widget makeOrderPage() {
+    return BlocProvider<BarberAllOrdersBloc>(
+        create: (context) => BarberAllOrdersBloc(), child: BarberOrdersPage());
   }
 
-  Widget makeMainScreen(){
+  Widget makeMainScreen() {
     return BarberMainScreenWidget();
   }
 
-  Widget makeSettingScreen(){
+  Widget makeSettingScreen() {
     return BarberSettingsWidget();
   }
-
 }

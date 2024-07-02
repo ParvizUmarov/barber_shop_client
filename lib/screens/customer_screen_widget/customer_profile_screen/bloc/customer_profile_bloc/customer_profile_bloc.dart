@@ -22,7 +22,7 @@ class CustomerProfileBloc extends Bloc<CustomerProfileEvent, CustomerProfileStat
   _getProfileInfo(event, emit) async {
     emit(CustomerProgressState());
     var user = await _databaseService.getUserInfo();
-    var response = await _customersRepository.getProfileInfo(user!.mail, user.token);
+    var response = await _customersRepository.getProfileInfo(user!.token);
 
     if(response.response != null){
       emit(CustomerSuccessState(customer: response.response));
@@ -35,7 +35,7 @@ class CustomerProfileBloc extends Bloc<CustomerProfileEvent, CustomerProfileStat
     emit(CustomerProgressState());
     var user = await _databaseService.getUserInfo();
     log("onLogout event");
-    var response = await _customersRepository.logout(user!.mail);
+    var response = await _customersRepository.logout(user!.token);
     if(response.errorMessage == null){
       await _databaseService.deleteUser("CUSTOMER");
       emit(LogoutSuccess());

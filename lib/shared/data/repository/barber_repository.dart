@@ -35,10 +35,10 @@ class BarbersRepository{
 
   }
 
-  Future<ResponseFromRequest> getBarberInfo(String mail, String token) async {
+  Future<ResponseFromRequest> getBarberProfileInfo(String token) async {
     try{
-      var response = await http.post(
-        Uri.parse('$baseURL/barber/profile/$mail'),
+      var response = await http.get(
+        Uri.parse('$baseURL/barber/profile'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token

@@ -1,12 +1,23 @@
+import 'dart:developer';
+
+import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/bloc/barber_order_bloc/barber_order_bloc.dart';
+import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/bloc/barber_order_bloc/barber_order_event.dart';
+import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/bloc/barber_order_bloc/barber_order_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:intl/intl.dart';
 import '../../../../../shared/resources/resources.dart';
 import '../../../../shared/theme/colors/Colors.dart';
 
-class BarberHomePage extends StatelessWidget {
+class BarberHomePage extends StatefulWidget {
   const BarberHomePage({super.key});
 
+  @override
+  State<BarberHomePage> createState() => _BarberHomePageState();
+}
+
+class _BarberHomePageState extends State<BarberHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +39,22 @@ class BarberHomePage extends StatelessWidget {
   }
 }
 
-class _TodayOrders extends StatelessWidget {
+class _TodayOrders extends StatefulWidget {
   const _TodayOrders({
     super.key,
   });
+
+  @override
+  State<_TodayOrders> createState() => _TodayOrdersState();
+}
+
+class _TodayOrdersState extends State<_TodayOrders> {
+
+  @override
+  void initState() {
+    context.read<BarberReservedOrderBloc>().add(GetAllReservedOrder());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +83,37 @@ class _TodayOrders extends StatelessWidget {
             Divider(
               color: Colors.white,
             ),
-            _Customer(
-              customerName: 'Парвиз',
-              customerPhone: '928466000',
-              timeOfOrders: '10:30',
-            ),
-            _Customer(
-              customerName: 'Фирдаус',
-              customerPhone: '928466000',
-              timeOfOrders: '11:30',
-            ),
-            _Customer(
-              customerName: 'Абдулатиф',
-              customerPhone: '928466000',
-              timeOfOrders: '12:30',
+            BlocBuilder<BarberReservedOrderBloc, BarberOrderState>(
+              builder: (context, state) {
+                if(state is ProgressOrderState){
+                  return Center(child: CircularProgressIndicator(color: AppColors.mainColor,),);
+                }else if(state is SuccessOrderState){
+                  final model = state.orders;
+                  if(model.isEmpty){
+                    return Center(child: Text("Пока нету заказов"),);
+                  }else{
+                    return Container(
+                      height: model.length * 60,
+                      child: ListView.separated(
+                          itemBuilder: (context, index){
+                            log('order: ${state.orders.first}');
+                            final order = model[index];
+                            return _OrderContainer(
+                                customerName: order.customerName,
+                                customerPhone: order.customerPhone,
+                                timeOfOrders: '${order.time.hour}:${order.time.minute}');
+                          },
+                          separatorBuilder: (context, index){
+                            return SizedBox(height: 10,);
+                          },
+                          itemCount: model.length),
+                    );
+                  }
+                }else{
+                  return Center(child: Text('Упс что то пошло не так'),);
+                }
+
+              }
             ),
 
             Padding(
@@ -97,12 +137,12 @@ class _TodayOrders extends StatelessWidget {
   }
 }
 
-class _Customer extends StatelessWidget {
+class _OrderContainer extends StatelessWidget {
   final String customerName;
   final String customerPhone;
   final String timeOfOrders;
 
-  const _Customer({
+  const _OrderContainer({
     super.key,
     required this.customerName,
     required this.customerPhone,

@@ -8,9 +8,15 @@ class BarberOrdersInitialState extends BarberOrdersState{}
 class BarberOrdersProgressState extends BarberOrdersState{}
 
 class BarberOrdersSuccessState extends BarberOrdersState{
-  final List<OrderInfo> barberOrders;
+  final List<OrderInfo> doneOrders;
+  final List<OrderInfo> reservedOrders;
+  final List<OrderInfo> canceledOrders;
 
-  BarberOrdersSuccessState({required this.barberOrders});
+  BarberOrdersSuccessState({
+    required this.doneOrders,
+    required this.reservedOrders,
+    required this.canceledOrders
+  });
 }
 
 class BarberOrdersFailure extends BarberOrdersState{

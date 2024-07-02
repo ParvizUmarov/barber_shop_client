@@ -170,7 +170,7 @@ class _OrderStatus extends StatelessWidget {
           color: getContainerColor(status),
           borderRadius: BorderRadius.circular(20)
       ),
-      child: Center(child: Text(status)),
+      child: Center(child: Text(status, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),)),
     );
   }
 
@@ -178,7 +178,7 @@ class _OrderStatus extends StatelessWidget {
     if(status == OrderStatus.done){
       return Colors.green;
     }else if(status == OrderStatus.reserved){
-      return Colors.yellow;
+      return Colors.amber;
     }else if(status == OrderStatus.changed){
       return Colors.blue;
     }else {

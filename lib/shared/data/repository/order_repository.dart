@@ -12,10 +12,11 @@ import 'package:http/http.dart' as http;
 
 class OrderRepository{
 
-  Future<ResponseFromRequest> getOrderOfBarber(int id, String token) async {
+  Future<ResponseFromRequest> getAllOrderOfBarber(String token) async {
     try{
+      List<List<OrderInfo>> allOrders = [];
       var response = await http.get(
-        Uri.parse('$baseURL/order/barber/$id'),
+        Uri.parse('$baseURL/order/barber/all_orders'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token
@@ -25,11 +26,51 @@ class OrderRepository{
 
       final data = json.decode(utf8.decode(response.bodyBytes)) as List;
 
+      log('response from all barber orders: $data');
+
+      var doneList = (data[0] as List)
+          .map((orderJson) => OrderInfo.fromJson(orderJson))
+          .toList();
+
+      var reservedList = (data[1] as List)
+          .map((orderJson) => OrderInfo.fromJson(orderJson))
+          .toList();
+
+      var canceledList = (data[2] as List)
+          .map((orderJson) => OrderInfo.fromJson(orderJson))
+          .toList();
+
+      log('first $doneList');
+      log('second: $reservedList');
+      log('third: $canceledList');
+
+      allOrders.add(doneList);
+      allOrders.add(reservedList);
+      allOrders.add(canceledList);
+
+      return ResponseFromRequest(response: allOrders);
+    }catch (e){
+      return ResponseFromRequest(errorMessage: e.toString());
+    }
+  }
+
+  Future<ResponseFromRequest> getBarberReservedOrder(String token) async {
+    try{
+      var response = await http.get(
+        Uri.parse('$baseURL/order/barber/reserved_order'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token
+        },
+      );
+
+      final data = json.decode(utf8.decode(response.bodyBytes)) as List;
+
       List<OrderInfo> orders = data
           .map((orderJson) => OrderInfo.fromJson(orderJson))
           .toList();
 
-      log('response from all barber orders: $orders');
+      log('response from all barber reserved orders: $orders');
 
       return ResponseFromRequest(response: orders);
     }catch (e){
@@ -37,10 +78,10 @@ class OrderRepository{
     }
   }
 
-  Future<ResponseFromRequest> getOrderOfCustomer(int id, String token) async {
+  Future<ResponseFromRequest> getOrderOfCustomer(String token) async {
     try{
       var response = await http.get(
-        Uri.parse('$baseURL/order/customer/$id'),
+        Uri.parse('$baseURL/order/customer'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token
@@ -61,13 +102,13 @@ class OrderRepository{
     }
   }
 
-  Future<ResponseFromRequest> getCustomerReservedOrder(Users users) async {
+  Future<ResponseFromRequest> getCustomerReservedOrder(String token) async {
     try{
       var response = await http.get(
-        Uri.parse('$baseURL/order/customer/${users.uid}/reserved'),
+        Uri.parse('$baseURL/order/customer/reserved'),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": users.token
+          "Authorization": token
         },
       );
 

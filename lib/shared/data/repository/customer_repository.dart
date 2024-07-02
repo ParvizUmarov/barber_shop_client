@@ -24,10 +24,10 @@ class CustomersRepository{
 
   }
 
-  Future<ResponseFromRequest> getProfileInfo(String mail, String token) async {
+  Future<ResponseFromRequest> getProfileInfo(String token) async {
     try{
       final response = await http.post(
-        Uri.parse('$baseURL/customer/profile/$mail'),
+        Uri.parse('$baseURL/customer/profile'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token
@@ -43,9 +43,14 @@ class CustomersRepository{
 
   }
 
-  Future<ResponseFromRequest> logout(String mail) async {
+  Future<ResponseFromRequest> logout(String token) async {
     try{
-      final response = await http.get(Uri.parse('$baseURL/customer/logout/$mail'),);
+      final response = await http.get(
+        Uri.parse('$baseURL/customer/logout'),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+          });
       log('response status (customer logout): ${response.statusCode}');
       return ResponseFromRequest(response: response.statusCode);
     }catch (e){
