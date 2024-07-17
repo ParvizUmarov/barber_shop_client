@@ -10,12 +10,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import '../../../../../shared/network/network.dart';
 import '../../../../shared/theme/colors/Colors.dart';
 import '../../../../shared/helper/chat_bubbles.dart';
-import 'package:http/http.dart' as http;
 
 class BarberChatRoom extends StatefulWidget {
   final String receiverUserEmail;

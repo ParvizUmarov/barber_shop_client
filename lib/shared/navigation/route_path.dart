@@ -6,6 +6,7 @@ class RoutePath{
   static const customerRegisterPath = 'customerLogin/customerRegister';
   static const customerResetPasswordPath = 'customerLogin/customerResetPassword';
   static const customerMainPath = 'customerMainScreen';
+  static const customerBarberDetail = 'customerBarberDetail';
 
   static const barberLoginPath = 'barberLogin';
   static const barberRegisterPath = 'barberLogin/barberRegister';

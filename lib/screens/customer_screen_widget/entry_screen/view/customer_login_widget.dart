@@ -98,7 +98,7 @@ class _RegisterButton extends StatelessWidget {
         children: [
           Text('Нет аккаунта?  '),
           GestureDetector(
-              onTap: () => router.pushNamed(RouteName.customerRegisterScreen),
+              onTap: () => router.pushNamed(Routes.customerRegisterScreen),
               child: Text(
                 'Регистрация',
                 style: TextStyle(
@@ -126,7 +126,7 @@ class _LoginButtonWidget extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state){
         if(state is CustomerAuthAuthorizedState){
-          router.pushReplacementNamed(RouteName.customerMainScreen);
+          router.goNamed(Routes.customerHomePage);
           // ScaffoldMessenger.of(context).showSnackBar(
           //   snackBar(context, 'Авторизация прошла успешно', Colors.green),
           // );
@@ -185,7 +185,7 @@ class _ForgottenTextButton extends StatelessWidget {
       children: [
         TextButton(
             onPressed: () {
-              router.pushNamed(RouteName.customerResetPasswordScreen);
+              router.pushNamed(Routes.customerResetPasswordScreen);
             },
             child: Text(
               'Забыли пароль?',

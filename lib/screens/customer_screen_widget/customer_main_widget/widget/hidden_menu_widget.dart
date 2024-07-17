@@ -1,3 +1,4 @@
+import 'package:barber_shop/screens/customer_screen_widget/home_page_widget/view/home_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import '../../factories/customer_screen_factory.dart';
@@ -33,7 +34,7 @@ class _CustomerHiddenMenuWidgetState extends State<CustomerHiddenMenuWidget> {
               baseStyle: baseStyle,
               selectedStyle: selectedStyle
           ),
-          _screenFactory.makeMainScreen()
+          _screenFactory.makeMainScreen(_screenFactory.makeHomePageScreen())
       ),
       ScreenHiddenDrawer(
           ItemHiddenMenu(
@@ -69,6 +70,7 @@ class _CustomerHiddenMenuWidgetState extends State<CustomerHiddenMenuWidget> {
     return HiddenDrawerMenu(
       screens: _pages,
       backgroundColorMenu: Theme.of(context).colorScheme.background,
+      backgroundColorContent: Theme.of(context).colorScheme.background,
 
     );
   }

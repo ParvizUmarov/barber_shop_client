@@ -1,6 +1,7 @@
 
 import 'package:barber_shop/screens/customer_screen_widget/booking_page_widget/bloc/customer_order_bloc/customer_order_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/booking_page_widget/booking_page.dart';
+import 'package:barber_shop/screens/customer_screen_widget/chat_page_widget/bloc/customer_chat_bloc/customer_chat_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/chat_page_widget/chat_page.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_history_orders_page/bloc/customer_history_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_history_orders_page/history_page.dart';
@@ -9,7 +10,12 @@ import 'package:barber_shop/screens/customer_screen_widget/customer_profile_scre
 import 'package:barber_shop/screens/customer_screen_widget/customer_settings_screen/setting_page.dart';
 import 'package:barber_shop/screens/customer_screen_widget/entry_screen/entry_page.dart';
 import 'package:barber_shop/screens/customer_screen_widget/home_page_widget/bloc/barber_info/barber_info_bloc.dart';
+import 'package:barber_shop/screens/customer_screen_widget/map_page_widget/bloc/salon/salon_event.dart';
+import 'package:barber_shop/screens/customer_screen_widget/map_page_widget/bloc/salon/salons_bloc.dart';
+import 'package:barber_shop/screens/customer_screen_widget/map_page_widget/cubit/select_salon_cubit.dart';
 import 'package:barber_shop/screens/customer_screen_widget/map_page_widget/map_page.dart';
+import 'package:barber_shop/shared/data/entity/barber.dart';
+import 'package:barber_shop/shared/data/entity/barber_info.dart';
 import 'package:barber_shop/shared/general_blocs/auth_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_profile_screen/bloc/customer_profile_bloc/customer_profile_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_profile_screen/bloc/customer_profile_bloc/customer_profile_event.dart';
@@ -31,7 +37,7 @@ class CustomerScreenFactory {
   Widget makeLoaderScreen(BuildContext context) {
     final authBloc = _customerAuthBloc ??
         AuthBloc(CustomerAuthCheckStatusInProgressState(), context,
-            RouteName.customerMainScreen);
+            Routes.customerMainScreen);
     _customerAuthBloc = authBloc;
     return BlocProvider(
       create: (_) => LoaderViewCubit(LoaderViewCubitState.unknown, authBloc),
@@ -48,19 +54,25 @@ class CustomerScreenFactory {
 
   Widget makeSettingScreen() => CustomerSettingsScreenWidget();
 
-  Widget makeMainScreen() => CustomerMainScreenWidget();
+  Widget makeMainScreen(Widget child) => CustomerScaffoldNavBar(child: child,);
 
   Widget makeHomePageScreen() => BlocProvider<BarberInfoBloc>(
       create: (context) => BarberInfoBloc(),
       child: HomePage());
 
-  Widget makeMapPageScreen() => CustomerMapPage();
+  Widget makeMapPageScreen() => BlocProvider<SalonBloc>(
+      create: (context) => SalonBloc()..add(GetAllSalons()),
+  child: BlocProvider<SelectSalonCubit>(
+      create: (BuildContext context) => SelectSalonCubit(),
+  child: CustomerMapPage()));
 
   Widget makeBookingPageScreen() => BlocProvider(
       create: (context) => CustomerOrderBloc(),
       child: BookingPage());
 
-  Widget makeChatPageScreen() => ChatPageWidgetScreen();
+  Widget makeChatPageScreen() => BlocProvider(
+      create: (BuildContext context) => CustomerChatBloc()..add(GetAllChatByCustomer()),
+      child: ChatPageWidgetScreen());
 
   Widget makeCustomerHistoryPage() => BlocProvider<CustomerHistoryBloc>(
       create: (context) => CustomerHistoryBloc(),
@@ -69,7 +81,7 @@ class CustomerScreenFactory {
   Widget makeForgotPasswordScreen() {
     return BlocProvider<AuthBloc>(
         create: (context) =>
-            AuthBloc(AuthUnknownState(), context, RouteName.customerMainScreen),
+            AuthBloc(AuthUnknownState(), context, Routes.customerMainScreen),
         child: ResetPasswordScreen());
   }
 
@@ -77,12 +89,17 @@ class CustomerScreenFactory {
     return CustomerRegisterWidget();
   }
 
-  Widget makeCustomerHiddenMenuWidget() => CustomerHiddenMenuWidget();
+  //Widget makeCustomerHiddenMenuWidget() => CustomerHiddenMenuWidget();
 
   Widget makeCustomerLoginWidget() {
     return BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(CustomerAuthCheckStatusInProgressState(),
-            context, RouteName.customerMainScreen),
+            context, Routes.customerMainScreen),
         child: CustomerLoginWidget());
   }
+
+  Widget makeBarberDetailsScreen(BarberInfo barberInfo){
+    return BookingScreen(barberInfo: barberInfo,);
+  }
+
 }

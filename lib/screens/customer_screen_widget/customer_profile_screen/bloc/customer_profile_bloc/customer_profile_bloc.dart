@@ -39,7 +39,7 @@ class CustomerProfileBloc extends Bloc<CustomerProfileEvent, CustomerProfileStat
     if(response.errorMessage == null){
       await _databaseService.deleteUser("CUSTOMER");
       emit(LogoutSuccess());
-      router.pushReplacementNamed(RouteName.startScreen);
+      //router.pushReplacementNamed(Routes.startScreen);
       log("LogoutSuccess");
     }else{
       emit(CustomerFailureState(errorMessage: response.errorMessage!));

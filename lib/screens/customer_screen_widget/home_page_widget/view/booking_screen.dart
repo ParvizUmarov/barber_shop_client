@@ -8,16 +8,10 @@ import '../../../../shared/theme/colors/Colors.dart';
 import 'booking.dart';
 
 class BookingScreen extends StatelessWidget {
-  final double rating;
-  final bool isOpened;
-  final String barberSchedule;
   final BarberInfo barberInfo;
 
   const BookingScreen(
       {super.key,
-      required this.rating,
-      required this.isOpened,
-      required this.barberSchedule,
         required this.barberInfo});
 
   @override
@@ -46,11 +40,11 @@ class BookingScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
-                _BarberName(masterName: barberInfo.name, isOpened: isOpened),
-                _BarberRating(rating: rating),
+                _BarberName(masterName: barberInfo.name, isOpened: true),
+                _BarberRating(rating: 3),
                 SizedBox(height: 20),
                 _BarberScheduleAndLocation(
-                    barberSchedule: barberSchedule, locations: barberInfo.salonAddress),
+                    barberSchedule: '8:00 - 18:00', locations: barberInfo.salonAddress),
                 SizedBox(height: 10),
                 _Services(cost: barberInfo.servicePrice),
                 SizedBox(height: 10),

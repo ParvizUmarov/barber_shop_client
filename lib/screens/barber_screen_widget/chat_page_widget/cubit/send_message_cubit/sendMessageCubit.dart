@@ -11,7 +11,7 @@ class SendMessageCubit extends Cubit<Action>{
   MessageRepository repository = MessageRepository();
 
   sendMessage(Message message) async {
-    log('send message from cubit: $message');
+    log('send message from bloc: $message');
      repository.sendMessage(message);
      //emit(Action.send);
   }

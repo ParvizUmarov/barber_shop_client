@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:barber_shop/main.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_history_orders_page/bloc/customer_history_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_history_orders_page/bloc/customer_history_event.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_history_orders_page/bloc/customer_history_state.dart';
+import 'package:barber_shop/screens/customer_screen_widget/customer_main_widget/view/customer_main_screen_widget.dart';
 import 'package:barber_shop/shared/data/entity/order_info.dart';
 import 'package:barber_shop/shared/theme/colors/Colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +31,10 @@ class _CustomerHistoryPageState extends State<CustomerHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
+      appBar: AppBar(
+        title: Text('История заказов'),
+      ),
       body: BlocBuilder<CustomerHistoryBloc, CustomerHistoryState>(
           builder: (context, state) {
         if (state is HistoryPageProgress) {

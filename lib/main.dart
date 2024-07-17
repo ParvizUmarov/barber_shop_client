@@ -1,6 +1,6 @@
 
 import 'package:barber_shop/screens/app.dart';
-import 'package:barber_shop/screens/barber_screen_widget/barber_profile_screen/cubit/barber_profile_cubit.dart';
+import 'package:barber_shop/screens/barber_screen_widget/barber_profile_screen/bloc/barber_profile_bloc.dart';
 import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/bloc/chat_bloc/chat_bloc.dart';
 import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/bloc/chat_room_bloc/chat_room_bloc.dart';
 import 'package:barber_shop/screens/barber_screen_widget/chat_page_widget/cubit/send_message_cubit/sendMessageCubit.dart';
@@ -35,9 +35,9 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
     BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(
-        RegisterInitialState(), context, "CUSTOMER", RouteName.customerMainScreen),),
+        RegisterInitialState(), context, "CUSTOMER", Routes.customerMainScreen),),
     BlocProvider<BookingBloc>(create: (context) => BookingBloc(), lazy: false),
-    BlocProvider<BarberProfileCubit>(create: (context) => BarberProfileCubit()),
+    BlocProvider(create: (context) => BarberProfileBloc()),
     BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
     BlocProvider(create: (context) => ChatRoomBloc()),
     BlocProvider(create: (context) => SendMessageCubit()),

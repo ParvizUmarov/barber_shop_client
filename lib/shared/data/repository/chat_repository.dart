@@ -50,4 +50,24 @@ class ChatRepository{
     }
   }
 
+  Future<ResponseFromRequest> getChatByCustomerId(int id) async{
+    try{
+      final response = await http.get(Uri.parse('$baseURL/chat/customer/$id'));
+      log('Status code: ${response.statusCode}');
+      final data = jsonDecode(response.body);
+      log('response from chatRepository: $data');
+
+      List<Chat> chats = (jsonDecode(response.body) as List)
+          .map((chatJson) => Chat.fromJson(chatJson))
+          .toList();
+
+      return ResponseFromRequest(response: chats);
+    }on http.ClientException {
+      log('Что то пошло не так');
+      return ResponseFromRequest(errorMessage: 'Что то пошло не так');
+    }catch (e){
+      return ResponseFromRequest(errorMessage: e.toString());
+    }
+  }
+
 }

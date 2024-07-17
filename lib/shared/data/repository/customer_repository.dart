@@ -26,7 +26,7 @@ class CustomersRepository{
 
   Future<ResponseFromRequest> getProfileInfo(String token) async {
     try{
-      final response = await http.post(
+      final response = await http.get(
         Uri.parse('$baseURL/customer/profile'),
         headers: {
           "Content-Type": "application/json",

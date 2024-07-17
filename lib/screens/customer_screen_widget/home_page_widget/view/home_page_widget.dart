@@ -11,10 +11,13 @@ import 'package:barber_shop/screens/customer_screen_widget/home_page_widget/view
 import 'package:barber_shop/shared/data/entity/barber_info.dart';
 import 'package:barber_shop/shared/data/entity/order_info.dart';
 import 'package:barber_shop/shared/data/entity/stores.dart';
+import 'package:barber_shop/shared/navigation/go_router_navigation.dart';
+import 'package:barber_shop/shared/navigation/route_name.dart';
 import 'package:barber_shop/shared/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../shared/theme/colors/Colors.dart';
 import 'booking_screen.dart';
 
@@ -216,13 +219,11 @@ class _BarberBookingAndPriceWidget extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(AppColors.mainColor),
           ),
           onPressed: () => {
+            //context.push(Routes.customerBarberDetail, extra: barberInfo),
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (BuildContext context) => BookingScreen(
-                  rating: rating,
-                  isOpened: isOpened,
-                  barberSchedule: barberSchedule,
                   barberInfo: barberInfo
                 ),
               ),
@@ -539,7 +540,9 @@ class _OfferWidget extends StatelessWidget {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.white)),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.go(Routes.customerMapPage);
+                      },
                       child: Text(
                         'Прямо сейчас',
                         style: TextStyle(color: Colors.black),

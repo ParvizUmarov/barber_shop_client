@@ -134,7 +134,7 @@ Future<void> onAuthLogoutEvent(
     AuthLogoutEvent event, Emitter<AuthState> emit) async {
   try {
     await FirebaseAuth.instance.signOut();
-    router.pushReplacementNamed(RouteName.startScreen);
+    router.pushReplacementNamed(Routes.startScreen);
   } catch (e) {
     emit(AuthFailureState(e));
   }

@@ -3,9 +3,11 @@ import 'package:barber_shop/shared/general_blocs/auth_bloc.dart';
 import 'package:barber_shop/shared/resources/resources.dart';
 import 'package:barber_shop/shared/navigation/go_router_navigation.dart';
 import 'package:barber_shop/shared/navigation/route_name.dart';
-import 'package:barber_shop/screens/barber_screen_widget/barber_profile_screen/cubit/barber_profile_cubit.dart';
+import 'package:barber_shop/shared/widgets/shimmer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/barber_profile_bloc.dart';
 
 class BarberProfileScreen extends StatefulWidget {
   const BarberProfileScreen({super.key});
@@ -17,15 +19,26 @@ class BarberProfileScreen extends StatefulWidget {
 class _BarberProfileScreenState extends State<BarberProfileScreen> {
 
   @override
+  void initState() {
+    context.read<BarberProfileBloc>().add(GetBarberProfileInfo());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    context.read<BarberProfileCubit>().getBarberData();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
-        child: BlocBuilder<BarberProfileCubit, BarberProfileState>(
+        child: BlocConsumer<BarberProfileBloc, BarberProfileState>(
+            listener: (context, barberState){
+              if(barberState is LogoutState){
+                router.pushReplacementNamed(Routes.startScreen);
+              }
+            },
             builder: (context, barberState) {
-
-              if(barberState is ProfileSuccess){
+              if(barberState is ProfileInProgress){
+                return Center(child: ShimmerWidget(typeBox: ShimmerTypeBox.profile,));
+              }else if(barberState is ProfileSuccess){
             final barber = barberState.barber;
             return _BarberProfileWidget(
                 name: barber.name ?? '',
@@ -35,7 +48,7 @@ class _BarberProfileScreenState extends State<BarberProfileScreen> {
               birthday: barber.birthday ?? '',
               workExperience: barber.workExperience ?? 0,);
           }else{
-            return Text("Нету данных");
+                return Center(child: Text('Вам нужно авторизоваться'));
           }
         }),
       ),
@@ -111,8 +124,7 @@ class _BarberProfileWidgetState extends State<_BarberProfileWidget> {
                     ),
                     child: IconButton(
                       onPressed: (){
-                        context.read<BarberProfileCubit>().logout();
-                        router.pushReplacementNamed(RouteName.startScreen);
+                        context.read<BarberProfileBloc>().add(Logout());
                       },
                       icon: Icon(Icons.exit_to_app),
                     ),

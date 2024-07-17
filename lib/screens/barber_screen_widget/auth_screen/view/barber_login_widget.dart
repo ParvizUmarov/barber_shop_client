@@ -93,7 +93,7 @@ class _BarberScreenBody extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             snackBar(context, 'Авторизация прошла успешно', Colors.green),
                           );
-                          router.goNamed(RouteName.barberMainScreen);
+                          router.goNamed(Routes.barberMainScreen);
                         } else if (state is BarberFailureState) {
                           log('failure error: ${state.errorMessage}');
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -211,7 +211,7 @@ class _RegisterButton extends StatelessWidget {
         children: [
           Text('Нет аккаунта?  '),
           GestureDetector(
-              onTap: () => router.pushNamed(RouteName.barberRegisterScreen),
+              onTap: () => router.pushNamed(Routes.barberRegisterScreen),
               child: Text(
                 'Регистрация',
                 style: TextStyle(
@@ -236,7 +236,7 @@ class _ForgottenTextButton extends StatelessWidget {
       children: [
         TextButton(
             onPressed: () =>
-                router.pushNamed(RouteName.barberResetPasswordScreen),
+                router.pushNamed(Routes.barberResetPasswordScreen),
             child: Text(
               'Забыли пароль?',
               style: TextStyle(

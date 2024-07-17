@@ -52,7 +52,7 @@ class _BarberChatPageState extends State<BarberChatPage> {
                       itemBuilder: (context, index){
                         return InkWell(
                             onTap: (){
-                              context.pushNamed(RouteName.barberMessageScreen,
+                              context.pushNamed(Routes.barberMessageScreen,
                                   extra: chatState.allChats[index]);
                             },
                             child: _ChatTileWidget(chat: chatState.allChats[index],));

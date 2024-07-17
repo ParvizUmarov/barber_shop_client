@@ -5,7 +5,6 @@ import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/bloc/b
 import 'package:barber_shop/screens/barber_screen_widget/home_page_widget/bloc/barber_order_bloc/barber_order_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:intl/intl.dart';
 import '../../../../../shared/resources/resources.dart';
 import '../../../../shared/theme/colors/Colors.dart';
@@ -27,7 +26,7 @@ class _BarberHomePageState extends State<BarberHomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: Column(
               children: [
-                _WeekCalendarWidget(),
+                //_WeekCalendarWidget(),
                 SizedBox(height: 20),
                 _TodayOrders(),
               ],
@@ -169,63 +168,63 @@ class _OrderContainer extends StatelessWidget {
   }
 }
 
-class _WeekCalendarWidget extends StatefulWidget {
-  const _WeekCalendarWidget({
-    super.key,
-  });
-
-  @override
-  State<_WeekCalendarWidget> createState() => _WeekCalendarWidgetState();
-}
-
-class _WeekCalendarWidgetState extends State<_WeekCalendarWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final dateColor = Theme.of(context).brightness == Brightness.light
-        ? AppColors.mainColor
-        : Colors.white;
-    final pressedDateStyle = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
-
-    return Container(
-      width: double.infinity,
-      height: 130,
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(blurRadius: 5, color: Colors.black38)]),
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-          child: CalendarWeek(
-              minDate: DateTime.now().add(Duration(days: -365)),
-              maxDate: DateTime.now().add(Duration(days: 365)),
-              monthViewBuilder: (DateTime time) => Align(
-                    alignment: FractionalOffset.center,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        DateFormat.yMMMM().format(time),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: dateColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ),
-              todayBackgroundColor: AppColors.mainColor,
-              todayDateStyle:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              pressedDateBackgroundColor:
-                  Theme.of(context).colorScheme.secondary,
-              pressedDateStyle: TextStyle(color: pressedDateStyle),
-              backgroundColor: Colors.transparent,
-              height: 100,
-              showMonth: true,
-              dateStyle: TextStyle(color: dateColor),
-              dayOfWeekStyle: TextStyle(color: dateColor))),
-    );
-  }
-}
+// class _WeekCalendarWidget extends StatefulWidget {
+//   const _WeekCalendarWidget({
+//     super.key,
+//   });
+//
+//   @override
+//   State<_WeekCalendarWidget> createState() => _WeekCalendarWidgetState();
+// }
+//
+// class _WeekCalendarWidgetState extends State<_WeekCalendarWidget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final dateColor = Theme.of(context).brightness == Brightness.light
+//         ? AppColors.mainColor
+//         : Colors.white;
+//     final pressedDateStyle = Theme.of(context).brightness == Brightness.light
+//         ? Colors.black
+//         : Colors.white;
+//
+//     return Container(
+//       width: double.infinity,
+//       height: 130,
+//       decoration: BoxDecoration(
+//           color: Theme.of(context).colorScheme.primary,
+//           borderRadius: BorderRadius.circular(20),
+//           boxShadow: [BoxShadow(blurRadius: 5, color: Colors.black38)]),
+//       child: Padding(
+//           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+//           child: CalendarWeek(
+//               minDate: DateTime.now().add(Duration(days: -365)),
+//               maxDate: DateTime.now().add(Duration(days: 365)),
+//               // monthViewBuilder: (DateTime time) => Align(
+//               //       alignment: FractionalOffset.center,
+//               //       child: Container(
+//               //         margin: const EdgeInsets.symmetric(vertical: 4),
+//               //         child: Text(
+//               //           DateFormat.yMMMM().format(time),
+//               //           overflow: TextOverflow.ellipsis,
+//               //           textAlign: TextAlign.center,
+//               //           style: TextStyle(
+//               //               color: dateColor,
+//               //               fontWeight: FontWeight.bold,
+//               //               fontSize: 16),
+//               //         ),
+//               //       ),
+//               //     ),
+//               todayBackgroundColor: AppColors.mainColor,
+//               todayDateStyle:
+//                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+//               pressedDateBackgroundColor:
+//                   Theme.of(context).colorScheme.secondary,
+//               pressedDateStyle: TextStyle(color: pressedDateStyle),
+//               backgroundColor: Colors.transparent,
+//               height: 100,
+//               showMonth: true,
+//               dateStyle: TextStyle(color: dateColor),
+//               dayOfWeekStyle: TextStyle(color: dateColor))),
+//     );
+//   }
+// }

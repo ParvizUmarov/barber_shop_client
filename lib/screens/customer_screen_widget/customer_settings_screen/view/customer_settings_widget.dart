@@ -1,3 +1,4 @@
+import 'package:barber_shop/screens/customer_screen_widget/customer_main_widget/view/customer_main_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/theme/colors/Colors.dart';
@@ -10,6 +11,8 @@ class CustomerSettingsScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
+      drawer: NavBar(),
+      appBar: AppBar(title: Text('Настройки'),),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

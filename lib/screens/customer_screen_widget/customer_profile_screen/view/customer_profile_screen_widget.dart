@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:barber_shop/screens/customer_screen_widget/customer_main_widget/view/customer_main_screen_widget.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_profile_screen/bloc/customer_profile_bloc/customer_profile_bloc.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_profile_screen/bloc/customer_profile_bloc/customer_profile_event.dart';
 import 'package:barber_shop/screens/customer_screen_widget/customer_profile_screen/bloc/customer_profile_bloc/customer_profile_state.dart';
+import 'package:barber_shop/shared/widgets/shimmer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../shared/resources/resources.dart';
@@ -34,9 +36,13 @@ class _CustomerProfileScreenWidgetState
     return BlocBuilder<CustomerProfileBloc, CustomerProfileState>(
       builder: (context, state) {
         if(state is CustomerProgressState){
-          return Center(child: CircularProgressIndicator(color: AppColors.mainColor,),);
+          return Center(child: ShimmerWidget(typeBox: ShimmerTypeBox.profile,),);
         }else if (state is CustomerSuccessState){
           return Scaffold(
+             drawer: NavBar(),
+              appBar: AppBar(
+                title: Text('Профиль'),
+              ),
               backgroundColor: Theme.of(context).colorScheme.background,
               body: _CustomerProfileWidget(
                   name: state.customer.name,
@@ -45,7 +51,7 @@ class _CustomerProfileScreenWidgetState
                   phone: state.customer.phone)
           );
         }else {
-          return Center(child: Text('Нету данных'));
+          return Center(child: ShimmerWidget(typeBox: ShimmerTypeBox.profile,),);
         }
 
       }
@@ -94,24 +100,24 @@ class _CustomerProfileWidget extends StatelessWidget {
                     _CustomerDetailsInfo(
                         title: 'Phone', subtitle: phone, leading: Icons.phone),
                     SizedBox(height: 10),
-                    Column(
-                      children: [
-                        Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                               context.read<CustomerProfileBloc>().add(Logout());
-                            },
-                            icon: Icon(Icons.exit_to_app),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   children: [
+                    //     Container(
+                    //       width: 70,
+                    //       height: 70,
+                    //       decoration: BoxDecoration(
+                    //         color: Theme.of(context).colorScheme.secondary,
+                    //         borderRadius: BorderRadius.circular(30),
+                    //       ),
+                    //       child: IconButton(
+                    //         onPressed: () {
+                    //            context.read<CustomerProfileBloc>().add(Logout());
+                    //         },
+                    //         icon: Icon(Icons.exit_to_app),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

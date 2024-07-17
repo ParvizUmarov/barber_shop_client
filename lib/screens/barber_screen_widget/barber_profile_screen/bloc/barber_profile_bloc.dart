@@ -1,21 +1,22 @@
 
-import 'dart:developer';
-
 import 'package:barber_shop/shared/data/entity/barber.dart';
 import 'package:barber_shop/shared/data/repository/barber_repository.dart';
 import 'package:barber_shop/shared/services/database/database_service.dart';
 import 'package:bloc/bloc.dart';
 
-class BarberProfileCubit extends Cubit<BarberProfileState>{
-  BarberProfileCubit() : super(InitialState());
+class BarberProfileBloc extends Bloc<BarberProfileEvent, BarberProfileState>{
+  BarberProfileBloc() : super(InitialState()){
+    on<GetBarberProfileInfo>(_getProfileInfo);
+    on<Logout>(_logout);
+  }
 
   final repository = BarbersRepository();
-  final db_service = DB.instance;
+  final db = DB.instance;
 
-  getBarberData() async {
-    var usersInfo = await db_service.getUserInfo();
+   _getProfileInfo( event,  emit) async {
+    emit(ProfileInProgress());
+    var usersInfo = await db.getUserInfo();
     final response = await repository.getBarberProfileInfo(usersInfo!.token);
-
     if(response.errorMessage == null){
       final barber = response.response;
       emit(ProfileSuccess(barber: barber));
@@ -24,13 +25,13 @@ class BarberProfileCubit extends Cubit<BarberProfileState>{
     }
   }
 
-  logout() async {
-    var usersInfo = await db_service.getUserInfo();
-    await repository.logout(usersInfo!.mail);
-    await db_service.deleteUser("BARBER");
-    emit(LogoutState());
+   _logout( event,  emit) async {
+     emit(ProfileInProgress());
+     var usersInfo = await db.getUserInfo();
+     await repository.logout(usersInfo!.mail);
+     await db.deleteUser("BARBER");
+     emit(LogoutState());
   }
-
 }
 
 abstract class BarberProfileState {}
@@ -52,3 +53,10 @@ class FailureState extends BarberProfileState {
 }
 
 class LogoutState extends BarberProfileState{}
+
+
+abstract class BarberProfileEvent{}
+
+class GetBarberProfileInfo extends BarberProfileEvent{}
+
+class Logout extends BarberProfileEvent{}

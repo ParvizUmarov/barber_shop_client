@@ -26,14 +26,14 @@ class BarberScreenFactory {
         create: (BuildContext context) => AuthBloc(
             BarberAuthCheckStatusInProgressState(),
             context,
-            RouteName.barberMainScreen),
+            Routes.barberMainScreen),
         child: BarberLoginWidget());
   }
 
   Widget makeRegisterScreen() {
     return BlocProvider<RegisterBloc>(
       create: (context) => RegisterBloc(RegisterInitialState(), context,
-          "BARBER", RouteName.barberMainScreen),
+          "BARBER", Routes.barberMainScreen),
       child: BarberRegisterWidget(),
     );
   }
@@ -45,14 +45,14 @@ class BarberScreenFactory {
   Widget makeForgotPasswordScreen() {
     return BlocProvider<AuthBloc>(
         create: (context) =>
-            AuthBloc(AuthUnknownState(), context, RouteName.barberMainScreen),
+            AuthBloc(AuthUnknownState(), context, Routes.barberMainScreen),
         child: ResetPasswordScreen());
   }
 
   Widget makeProfileScreen() {
     return BlocProvider<AuthBloc>(
         create: (BuildContext context) => AuthBloc(
-            BarberAuthAuthorizedState(), context, RouteName.barberMainScreen),
+            BarberAuthAuthorizedState(), context, Routes.barberMainScreen),
         child: BarberProfileScreen());
   }
 

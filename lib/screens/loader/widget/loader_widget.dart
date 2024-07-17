@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../shared/navigation/go_router_navigation.dart';
 import '../../../shared/navigation/route_name.dart';
@@ -36,11 +37,11 @@ class _LoaderWidgetState extends State<LoaderWidget> {
   void onLoaderViewCubitStateChange(
       BuildContext context, LoaderViewCubitState state) {
     if (state == LoaderViewCubitState.barberAuthorized) {
-      router.pushReplacementNamed(RouteName.barberMainScreen);
+      router.pushReplacementNamed(Routes.barberMainScreen);
     } else if (state == LoaderViewCubitState.customerAuthorized) {
-      router.pushReplacementNamed(RouteName.customerMainScreen);
+      context.go(Routes.customerHomePage);
     } else if (state == LoaderViewCubitState.newVisitor) {
-      router.pushReplacementNamed(RouteName.startScreen);
+      router.pushReplacementNamed(Routes.startScreen);
     }
   }
 }

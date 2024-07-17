@@ -186,7 +186,7 @@ class _RegisterButtonWidget extends StatelessWidget {
     return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if(state is RegisterSuccessState){
-          router.pushReplacementNamed(RouteName.customerMainScreen);
+          router.pushReplacementNamed(Routes.customerMainScreen);
         }
       },
       builder: (context, state) {
